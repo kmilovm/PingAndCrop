@@ -4,16 +4,16 @@ using Microsoft.Extensions.Logging;
 
 namespace PingAndCrop.Functions
 {
-    public class Function1
+    public class TimedRequest
     {
         private readonly ILogger _logger;
 
-        public Function1(ILoggerFactory loggerFactory)
+        public TimedRequest(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<Function1>();
+            _logger = loggerFactory.CreateLogger<TimedRequest>();
         }
 
-        [Function("Function1")]
+        [Function("TimedRequest")]
         public void Run([TimerTrigger("0 */5 * * * *")] MyInfo myTimer)
         {
             _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
