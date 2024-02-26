@@ -1,18 +1,16 @@
-using AutoFixture;
-using Moq;
 using PingAndCrop.Domain.Services;
-using PingAndCrop.Objects;
+using PingAndCrop.Objects.Requests;
 
 namespace PingAndCrop.Tests
 {
-    public class RequestServiceTests(RequestService requestService)
+    public class RequestServiceTests(PacRequestService requestService)
     {   
 
         [Theory]
         [InlineData("http://www.google.com")]
         public async Task RequestServiceSuccess(string url)
         {
-            var request = new Request
+            var request = new PacRequest
             {
                 RequestedUrl = url
             };

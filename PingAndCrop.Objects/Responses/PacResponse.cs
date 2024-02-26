@@ -1,6 +1,6 @@
-﻿namespace PingAndCrop.Objects
+﻿namespace PingAndCrop.Objects.Responses
 {
-    public record Response
+    public record PacResponse
     {
         public string? Error { get; set; }
         public string? RawResponse { get; set; }

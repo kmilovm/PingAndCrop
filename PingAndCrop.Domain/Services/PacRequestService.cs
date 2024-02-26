@@ -1,16 +1,18 @@
 ﻿using PingAndCrop.Domain.Interfaces;
-using PingAndCrop.Objects;
+using PingAndCrop.Objects.Requests;
+using PingAndCrop.Objects.Responses;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class RequestService(HttpClient httpClient) : IRequestService
+    public class PacRequestService(IHttpClientFactory httpClientFactory) : IPacRequestService
     {
-        public async Task<Response> ProcessRequest(Request request)
+        public async Task<PacResponse> ProcessRequest(PacRequest request)
         {
+            using var httpClient = httpClientFactory.CreateClient();
             httpClient.BaseAddress = new Uri(request.RequestedUrl);
             var response = await httpClient.GetAsync(request.RequestedUrl);
             response.EnsureSuccessStatusCode();
-            return new Response()
+            return new PacResponse()
             {
                 RawResponse = await response.Content.ReadAsStringAsync(),
                 Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty

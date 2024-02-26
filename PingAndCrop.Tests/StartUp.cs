@@ -7,7 +7,7 @@ namespace PingAndCrop.Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IRequestService, IRequestService>();
+            services.AddTransient<IPacRequestService, IPacRequestService>();
         }
     }
 }

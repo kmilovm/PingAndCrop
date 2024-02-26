@@ -2,8 +2,13 @@
   "profiles": {
     "PingAndCrop.Functions": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7277",
-      "launchBrowser": false
+      "commandLineArgs": "--port 7279"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "httpPort": 31762,
+      "useSSL": false
     }
   }
 }
