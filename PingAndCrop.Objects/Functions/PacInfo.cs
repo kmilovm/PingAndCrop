@@ -1,6 +1,6 @@
 ﻿namespace PingAndCrop.Objects.Functions
 {
-    public class PacInfo
+    public class PacTimerInfo
     {
         public PacScheduleStatus ScheduleStatus { get; set; }
 

@@ -6,5 +6,6 @@ namespace PingAndCrop.Domain.Interfaces
     public interface IPacRequestService
     {
         Task<PacResponse> ProcessRequest(PacRequest request);
+        Task NotifyResponses(IList<PacResponse> responses);
     }
 }

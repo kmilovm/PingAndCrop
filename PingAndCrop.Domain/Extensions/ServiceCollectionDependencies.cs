@@ -1,7 +1,8 @@
-﻿using PingAndCrop.Domain.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
+using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Domain.Services;
 
-namespace PingAndCrop.RestAPI.Extensions
+namespace PingAndCrop.Domain.Extensions
 {
     public static class ServiceCollectionDependencies
     {
@@ -13,6 +14,9 @@ namespace PingAndCrop.RestAPI.Extensions
         public static IServiceCollection AddInjectedDependencies(this IServiceCollection services)
         {
             services.AddSingleton<IPacRequestService, PacRequestService>();
+            services.AddSingleton<IQueueService, QueueService>();
+            services.AddHostedService<PacTimedHostedService>();
+            services.AddSingleton<ISignalRManager, SignalRManager>();
             return services;
         }
     }

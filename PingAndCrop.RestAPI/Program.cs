@@ -2,7 +2,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.Json;
-using PingAndCrop.RestAPI.Extensions;
+using PingAndCrop.Domain.Extensions;
 
 namespace PingAndCrop.RestAPI
 {
@@ -27,6 +27,8 @@ namespace PingAndCrop.RestAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
+            builder.Services.AddSignalR().AddAzureSignalR();
+
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(corsPolicyBuilder =>
@@ -35,8 +37,10 @@ namespace PingAndCrop.RestAPI
                         .AllowAnyMethod()
                         .AllowAnyHeader();
                 });
-            }); ;
+            });
 
+            builder.Services.AddSingleton(builder.Configuration);
+            
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
