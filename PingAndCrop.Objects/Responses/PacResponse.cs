@@ -4,7 +4,6 @@ namespace PingAndCrop.Objects.Responses
 {
     public record PacResponse
     {
-        public string UserId { get; set; }
         public string? Error { get; set; }
         public string? RawResponse { get; set; }
 

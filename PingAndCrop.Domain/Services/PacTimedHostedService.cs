@@ -26,22 +26,30 @@ namespace PingAndCrop.Domain.Services
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var responses = new List<PacResponse>();
-            while (!stoppingToken.IsCancellationRequested)
+            try
             {
-                var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, true);
-                if (!nextExec.HasValue) continue;
-                var messages = await _queueService.GetMessagesFromQueue(_config["QueueName"]!);
-                foreach (var msg in messages.Value)
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    var pacRequest = JsonConvert.DeserializeObject<PacRequest>(msg.MessageText);
-                    if (pacRequest == null) continue;
-                    var response = await _pacRequestService.ProcessRequest(pacRequest);
-                    responses.Add(response);
+                    var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, true);
+                    if (!nextExec.HasValue) continue;
+                    var messages = await _queueService.GetMessagesFromQueue(_config["QueueName"]!);
+                    foreach (var msg in messages.Value)
+                    {
+                        var pacRequest = JsonConvert.DeserializeObject<PacRequest>(msg.MessageText);
+                        if (pacRequest == null) continue;
+                        var response = await _pacRequestService.ProcessRequest(pacRequest);
+                        responses.Add(response);
+                    }
+                    await _pacRequestService.NotifyResponses(responses);
+                    var valueMilliseconds = (nextExec - DateTime.Now).Value.Milliseconds;
+                    valueMilliseconds = valueMilliseconds > 0 ? valueMilliseconds : 1000;
+                    await Task.Delay(valueMilliseconds, stoppingToken);
                 }
-                await _pacRequestService.NotifyResponses(responses);
-                var valueMilliseconds = (nextExec - DateTime.Now).Value.Milliseconds;
-                valueMilliseconds = valueMilliseconds > 0 ? valueMilliseconds : 1000;
-                await Task.Delay(valueMilliseconds, stoppingToken);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
     }

@@ -20,7 +20,7 @@ namespace PingAndCrop.Domain.Services
         {
             foreach (var pacResponse in responses)
             {
-                await _signalRManager.SendMessage(pacResponse.UserId, new SignalRNotificationVm()
+                await _signalRManager.SendMessage(pacResponse.Request.UserId, new SignalRNotificationVm()
                 {
                     response = pacResponse
                 });
