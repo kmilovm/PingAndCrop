@@ -13,9 +13,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './request-url.component.css',
 })
 export class RequestUrlComponent {
-  url:string = '';
-
   constructor(private enqService: EnqueueService) {}
+
+  url:string = '';
 
   submit() {
     console.log("url", this.url);

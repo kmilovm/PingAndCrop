@@ -4,7 +4,6 @@ using Azure.Storage.Queues.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PingAndCrop.Domain.Interfaces;
-using PingAndCrop.Objects.Requests;
 
 namespace PingAndCrop.Domain.Services
 {
@@ -39,12 +38,11 @@ namespace PingAndCrop.Domain.Services
             return response;
         }
 
-        public async Task<Response<SendReceipt>> DequeueMessage(string queueNameIn, string queueNameOut, QueueMessage queueMessage)
+        public async Task<Response> DequeueMessage(string queueNameIn, QueueMessage queueMessage)
         {
             var queueClient = new QueueClient(AzureStorageConnectionString, queueNameIn);
             var responseOut = await queueClient.DeleteMessageAsync(queueMessage.MessageId, queueMessage.PopReceipt);
-            var responseIn = await EnqueueMessage(queueNameOut, JsonConvert.DeserializeObject<PacRequest>(queueMessage.MessageText)!);
-            return responseIn;
+            return responseOut;
         }
     }
 }

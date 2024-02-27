@@ -27,7 +27,7 @@ export class EnqueueService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    this.http.post(environment.apiUrl + controller, pacRequest, { headers: headers }).subscribe({
+    this.http.post(environment.BaseApiUrl + controller, pacRequest, { headers: headers }).subscribe({
       next: (res) => console.log('HTTP response', res),
       error: (err) => console.log('HTTP Error', err),
       complete: () => console.log('HTTP request completed.'),

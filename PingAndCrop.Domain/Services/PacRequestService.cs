@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Queues.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using PingAndCrop.Domain.Constants;
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Requests;
 using PingAndCrop.Objects.Responses;
@@ -10,24 +11,24 @@ namespace PingAndCrop.Domain.Services
     public class PacRequestService : IPacRequestService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IConfiguration _config;
         private readonly IQueueService _queueService;
-        
-        public PacRequestService(IHttpClientFactory httpClientFactory, IConfiguration config, IQueueService queueService)
+        private readonly string _queueIn;
+        private readonly string _queueOut;
+
+        public PacRequestService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IQueueService queueService)
         {
             _httpClientFactory = httpClientFactory;
-            _config = config;
             _queueService = queueService;
+            var config = configuration ?? throw new ArgumentException(StringMessages.NoConfigFound);
+            _queueIn = config["QueueNameIn"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
+            _queueOut = config["QueueNameOut"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
         }
 
         public async Task StoreResponses(IList<PacResponse> responses)
         {
-            var queueIn = _config["QueueNameIn"]; 
-            var queueOut = _config["QueueNameOut"];
             foreach (var pacResponse in responses)
             {
-                await _queueService.DequeueMessage(queueIn!, queueOut!, pacResponse.Message!);
-                await _queueService.EnqueueMessage(queueOut, pacResponse);
+                await _queueService.EnqueueMessage(_queueOut, pacResponse);
             }
         }
 
@@ -39,17 +40,18 @@ namespace PingAndCrop.Domain.Services
             {
                 var request = JsonConvert.DeserializeObject<PacRequest>(requestsQueueMessage.MessageText);
                 if (request == null) continue;
+                if (!Uri.IsWellFormedUriString(request!.RequestedUrl, UriKind.Absolute)) continue;
                 httpClient.BaseAddress = new Uri(request!.RequestedUrl);
                 var response = await httpClient.GetAsync(request.RequestedUrl);
                 response.EnsureSuccessStatusCode();
                 var pacResponse = new PacResponse()
                 {
-                    Message = requestsQueueMessage,
                     RawResponse = await response.Content.ReadAsStringAsync(),
                     Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
                     Request = request
                 };
                 pacResponses.Add(pacResponse);
+                await _queueService.DequeueMessage(_queueIn, requestsQueueMessage);
             }
             return pacResponses;
         }

@@ -5,12 +5,12 @@ namespace PingAndCrop.Domain.Interfaces
 {
     public interface IQueueService
     {
-        Task<Azure.Response<bool>> EnsureQueueCreation(string queueName);
+        Task<Response<bool>> EnsureQueueCreation(string queueName);
 
-        Task<Azure.Response<QueueMessage[]>> GetMessagesFromQueue(string queueName);
+        Task<Response<QueueMessage[]>> GetMessagesFromQueue(string queueName);
         
-        Task<Azure.Response<SendReceipt>> EnqueueMessage<TEnt>(string queueName, TEnt request);
+        Task<Response<SendReceipt>> EnqueueMessage<TEnt>(string queueName, TEnt request);
 
-        Task<Response<SendReceipt>> DequeueMessage(string queueNameIn, string queueNameOut, QueueMessage queueMessage);
+        Task<Response> DequeueMessage(string queueNameIn, QueueMessage queueMessage);
     }
 }

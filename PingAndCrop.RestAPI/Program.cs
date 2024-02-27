@@ -1,8 +1,10 @@
+using System.Reflection;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.Json;
 using PingAndCrop.Domain.Extensions;
+using PingAndCrop.RestAPI.Profiles;
 
 namespace PingAndCrop.RestAPI
 {
@@ -27,6 +29,7 @@ namespace PingAndCrop.RestAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
+            builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
             builder.Services.AddCors(options =>
             {

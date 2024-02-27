@@ -4,9 +4,8 @@ namespace PingAndCrop.Objects.Requests
 {
     public class PacRequest
     {
-        public string UserId { get; set; }
         public Guid Id { get; set; } = Guid.NewGuid();
-
+        public string UserId { get; set; }
         public required string RequestedUrl { get; set; }
     }
 
