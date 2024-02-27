@@ -1,14 +1,12 @@
 ﻿using Cronos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
 using PingAndCrop.Domain.Interfaces;
-using PingAndCrop.Objects.Requests;
 using PingAndCrop.Objects.Responses;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class PacTimedHostedService : BackgroundService
+    public class PacTimedHostedProcessService : BackgroundService
     {
         private readonly CronExpression _cronExp;
         private readonly IConfiguration _config;
@@ -16,7 +14,7 @@ namespace PingAndCrop.Domain.Services
         private readonly IQueueService _queueService;
         private readonly IPacRequestService _pacRequestService;
         
-        public PacTimedHostedService(IConfiguration config, IQueueService queueService, IPacRequestService pacRequestService)
+        public PacTimedHostedProcessService(IConfiguration config, IQueueService queueService, IPacRequestService pacRequestService)
         {
             _config = config;
             _queueService = queueService;
@@ -28,19 +26,22 @@ namespace PingAndCrop.Domain.Services
             var responses = new List<PacResponse>();
             try
             {
+                var queueIn = _config["QueueNameIn"];
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, true);
                     if (!nextExec.HasValue) continue;
-                    var messages = await _queueService.GetMessagesFromQueue(_config["QueueName"]!);
-                    foreach (var msg in messages.Value)
+                    
+                    var messages = await _queueService.GetMessagesFromQueue(queueIn!);
+                    if (messages.HasValue && messages.Value.Any())
                     {
-                        var pacRequest = JsonConvert.DeserializeObject<PacRequest>(msg.MessageText);
-                        if (pacRequest == null) continue;
-                        var response = await _pacRequestService.ProcessRequest(pacRequest);
-                        responses.Add(response);
+                        responses.AddRange(await _pacRequestService.ProcessRequests(messages.Value));
+                        if (responses.Any())
+                        {
+                            await _pacRequestService.StoreResponses(responses);
+                        }
                     }
-                    await _pacRequestService.NotifyResponses(responses);
+                    
                     var valueMilliseconds = (nextExec - DateTime.Now).Value.Milliseconds;
                     valueMilliseconds = valueMilliseconds > 0 ? valueMilliseconds : 1000;
                     await Task.Delay(valueMilliseconds, stoppingToken);

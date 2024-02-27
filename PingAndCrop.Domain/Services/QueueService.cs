@@ -31,11 +31,20 @@ namespace PingAndCrop.Domain.Services
             return await queueClient.ReceiveMessagesAsync(32);
         }
 
-        public async Task<Response<SendReceipt>> EnqueueMessage(string queueName, PacRequest request)
+        public async Task<Response<SendReceipt>> EnqueueMessage<TEnt>(string queueName, TEnt request)
         {
+            await EnsureQueueCreation(queueName);
             var queueClient = new QueueClient(AzureStorageConnectionString, queueName);
             var response =  await queueClient.SendMessageAsync(JsonConvert.SerializeObject(request));
             return response;
+        }
+
+        public async Task<Response<SendReceipt>> DequeueMessage(string queueNameIn, string queueNameOut, QueueMessage queueMessage)
+        {
+            var queueClient = new QueueClient(AzureStorageConnectionString, queueNameIn);
+            var responseOut = await queueClient.DeleteMessageAsync(queueMessage.MessageId, queueMessage.PopReceipt);
+            var responseIn = await EnqueueMessage(queueNameOut, JsonConvert.DeserializeObject<PacRequest>(queueMessage.MessageText)!);
+            return responseIn;
         }
     }
 }

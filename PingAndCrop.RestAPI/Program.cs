@@ -27,7 +27,6 @@ namespace PingAndCrop.RestAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
-            builder.Services.AddSignalR().AddAzureSignalR();
 
             builder.Services.AddCors(options =>
             {
@@ -48,7 +47,6 @@ namespace PingAndCrop.RestAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.UseCors();

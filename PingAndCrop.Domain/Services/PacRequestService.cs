@@ -1,44 +1,57 @@
-﻿using PingAndCrop.Domain.Interfaces;
+﻿using Azure.Storage.Queues.Models;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Requests;
 using PingAndCrop.Objects.Responses;
-using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.Domain.Services
 {
     public class PacRequestService : IPacRequestService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ISignalRManager _signalRManager;
-
-        public PacRequestService(IHttpClientFactory httpClientFactory, ISignalRManager signalRManager)
+        private readonly IConfiguration _config;
+        private readonly IQueueService _queueService;
+        
+        public PacRequestService(IHttpClientFactory httpClientFactory, IConfiguration config, IQueueService queueService)
         {
             _httpClientFactory = httpClientFactory;
-            _signalRManager = signalRManager;
+            _config = config;
+            _queueService = queueService;
         }
 
-        public async Task NotifyResponses(IList<PacResponse> responses)
+        public async Task StoreResponses(IList<PacResponse> responses)
         {
+            var queueIn = _config["QueueNameIn"]; 
+            var queueOut = _config["QueueNameOut"];
             foreach (var pacResponse in responses)
             {
-                await _signalRManager.SendMessage(pacResponse.Request.UserId, new SignalRNotificationVm()
-                {
-                    response = pacResponse
-                });
+                await _queueService.DequeueMessage(queueIn!, queueOut!, pacResponse.Message!);
+                await _queueService.EnqueueMessage(queueOut, pacResponse);
             }
         }
 
-        public async Task<PacResponse> ProcessRequest(PacRequest request)
+        public async Task<IEnumerable<PacResponse>> ProcessRequests(QueueMessage[] messages)
         {
+            var pacResponses = new List<PacResponse>();
             using var httpClient = _httpClientFactory.CreateClient();
-            httpClient.BaseAddress = new Uri(request.RequestedUrl);
-            var response = await httpClient.GetAsync(request.RequestedUrl);
-            response.EnsureSuccessStatusCode();
-            return new PacResponse()
+            foreach (var requestsQueueMessage in messages)
             {
-                RawResponse = await response.Content.ReadAsStringAsync(),
-                Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
-                Request = request
-            };
+                var request = JsonConvert.DeserializeObject<PacRequest>(requestsQueueMessage.MessageText);
+                if (request == null) continue;
+                httpClient.BaseAddress = new Uri(request!.RequestedUrl);
+                var response = await httpClient.GetAsync(request.RequestedUrl);
+                response.EnsureSuccessStatusCode();
+                var pacResponse = new PacResponse()
+                {
+                    Message = requestsQueueMessage,
+                    RawResponse = await response.Content.ReadAsStringAsync(),
+                    Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
+                    Request = request
+                };
+                pacResponses.Add(pacResponse);
+            }
+            return pacResponses;
         }
     }
 }

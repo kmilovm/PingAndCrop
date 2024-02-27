@@ -1,5 +1,5 @@
-﻿using Azure.Storage.Queues.Models;
-using PingAndCrop.Objects.Requests;
+﻿using Azure;
+using Azure.Storage.Queues.Models;
 
 namespace PingAndCrop.Domain.Interfaces
 {
@@ -9,7 +9,8 @@ namespace PingAndCrop.Domain.Interfaces
 
         Task<Azure.Response<QueueMessage[]>> GetMessagesFromQueue(string queueName);
         
-        Task<Azure.Response<SendReceipt>> EnqueueMessage(string queueName, PacRequest request);
-        
+        Task<Azure.Response<SendReceipt>> EnqueueMessage<TEnt>(string queueName, TEnt request);
+
+        Task<Response<SendReceipt>> DequeueMessage(string queueNameIn, string queueNameOut, QueueMessage queueMessage);
     }
 }

@@ -22,8 +22,8 @@ namespace PingAndCrop.RestAPI.Controllers
         public async Task<Azure.Response<SendReceipt>> Enqueue([FromBody] PacRequest pacRequest)
         {
             logger.LogInformation(string.Format(StringMessages.InitiatingRequest, pacRequest.RequestedUrl, DateTime.Now.ToLongTimeString()));
-            var queueName = config["QueueName"];
-            var answer = await queueService.EnqueueMessage(queueName, pacRequest);
+            var queueName = config["QueueNameIn"];
+            var answer = await queueService.EnqueueMessage(queueName!, pacRequest);
             logger.LogInformation(string.Format(StringMessages.FinalizingRequest, pacRequest.RequestedUrl, DateTime.Now.ToLongTimeString()));
 
             if (answer.HasValue) return answer;
@@ -39,10 +39,9 @@ namespace PingAndCrop.RestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<List<PacRequest>> GetMessages()
+        public async Task<List<PacRequest>> GetMessages([FromForm] string queueName)
         {
             var requests = new List<PacRequest>();
-            var queueName = config["QueueName"];
             var messages = await queueService.GetMessagesFromQueue(queueName);
             if (messages.HasValue)
             {

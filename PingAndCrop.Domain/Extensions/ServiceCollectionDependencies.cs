@@ -15,8 +15,7 @@ namespace PingAndCrop.Domain.Extensions
         {
             services.AddSingleton<IPacRequestService, PacRequestService>();
             services.AddSingleton<IQueueService, QueueService>();
-            services.AddHostedService<PacTimedHostedService>();
-            services.AddSingleton<ISignalRManager, SignalRManager>();
+            services.AddHostedService<PacTimedHostedProcessService>();
             return services;
         }
     }
