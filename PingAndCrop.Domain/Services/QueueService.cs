@@ -7,14 +7,9 @@ using PingAndCrop.Domain.Interfaces;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class QueueService : IQueueService
+    public class QueueService(IConfiguration config) : IQueueService
     {
-        public string AzureStorageConnectionString { get; set; }
-
-        public QueueService(IConfiguration config)
-        {
-            AzureStorageConnectionString = config["AzureStorageEndPoint"] ?? throw new InvalidOperationException();
-        }
+        public string AzureStorageConnectionString { get; set; } = config["AzureStorageEndPoint"] ?? throw new InvalidOperationException();
 
         public async Task<Response<bool>> EnsureQueueCreation(string queueName)
         {

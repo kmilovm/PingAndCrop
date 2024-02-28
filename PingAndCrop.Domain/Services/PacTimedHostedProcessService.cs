@@ -6,39 +6,32 @@ using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class PacTimedHostedProcessService : BackgroundService
+    public class PacTimedHostedProcessService(
+        IConfiguration config,
+        IQueueService queueService,
+        IPacRequestService pacRequestService)
+        : BackgroundService
     {
-        private readonly CronExpression _cronExp;
-        private readonly IConfiguration _config;
-        
-        private readonly IQueueService _queueService;
-        private readonly IPacRequestService _pacRequestService;
-        
-        public PacTimedHostedProcessService(IConfiguration config, IQueueService queueService, IPacRequestService pacRequestService)
-        {
-            _config = config;
-            _queueService = queueService;
-            _pacRequestService = pacRequestService;
-            _cronExp = CronExpression.Parse(config["CronExpression"]);
-        }
+        private readonly CronExpression _cronExp = CronExpression.Parse(config["CronExpression:Frequency"]);
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var responses = new List<PacResponse>();
             try
             {
-                var queueIn = _config["QueueNameIn"];
+                var queueIn = config["QueueNameIn"];
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, true);
+                    var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, Convert.ToBoolean(config["CronExpression:EnabledAtStart"]));
                     if (!nextExec.HasValue) continue;
                     
-                    var messages = await _queueService.GetMessagesFromQueue(queueIn!);
-                    if (messages.HasValue && messages.Value.Any())
+                    var messages = await queueService.GetMessagesFromQueue(queueIn!);
+                    if (messages.HasValue && messages.Value.Length != 0)
                     {
-                        responses.AddRange(await _pacRequestService.ProcessRequests(messages.Value));
-                        if (responses.Any())
+                        responses.AddRange(await pacRequestService.ProcessRequests(messages.Value));
+                        if (responses.Count != 0)
                         {
-                            await _pacRequestService.StoreResponses(responses);
+                            await pacRequestService.StoreResponses(responses);
                         }
                     }
                     

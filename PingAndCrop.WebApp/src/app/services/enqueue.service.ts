@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment'
 import { Guid } from 'guid-typescript';
 import { PacRequest } from '../models/pacRequest';
-import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +17,6 @@ export class EnqueueService {
       console.error("url cannot be null or empty");
       return;
     }
-    const controller : string = 'operations/enqueueRequest';
     const pacRequest: PacRequest = {
       Id: Guid.create().toString(),
       UserId:  localStorage.getItem('userId') ?? "",
@@ -27,7 +25,7 @@ export class EnqueueService {
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    this.http.post(environment.BaseApiUrl + controller, pacRequest, { headers: headers }).subscribe({
+    this.http.post(environment.BaseApiUrl + environment.EnqueueRoute, pacRequest, { headers: headers }).subscribe({
       next: (res) => console.log('HTTP response', res),
       error: (err) => console.log('HTTP Error', err),
       complete: () => console.log('HTTP request completed.'),
