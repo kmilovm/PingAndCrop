@@ -1,0 +1,28 @@
+<div>
+  <mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <b>Pending Requests</b>
+        </mat-panel-title>
+        <mat-panel-description>
+          Here you will find the pending requests to be analyzed
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="Id">
+          <th mat-header-cell *matHeaderCellDef> Id. </th>
+          <td mat-cell *matCellDef="let request"> {{request.Id}} </td>
+        </ng-container>
+        <ng-container matColumnDef="RequestedUrl">
+          <th mat-header-cell *matHeaderCellDef> Requested Url. </th>
+          <td mat-cell *matCellDef="let request"> {{request.RequestedUrl}} </td>
+        </ng-container>
+        <ng-container *ngIf="dataSource.data.length > 0">
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        </ng-container>
+        <tr mat-row *matRowDef="let request; columns: displayedColumns"></tr>
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

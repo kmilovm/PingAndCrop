@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Queues.Models;
-using PingAndCrop.Objects.Responses;
+using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Interfaces
 {

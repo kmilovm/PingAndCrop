@@ -4,21 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PingAndCrop.Domain.Constants;
 using PingAndCrop.Domain.Interfaces;
-using PingAndCrop.Objects.Requests;
-using PingAndCrop.Objects.Responses;
+using PingAndCrop.Objects.Models.Requests;
+using PingAndCrop.Objects.Models.Responses;
 using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.RestAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OperationsController(ILogger<OperationsController> logger, IConfiguration config, IQueueService queueService, IMapper mapper) : ControllerBase
+    public class MessagesController(ILogger<MessagesController> logger, IConfiguration config, IQueueService queueService, IMapper mapper) : ControllerBase
     {
-        public IMapper Mapper { get; } = mapper;
+        public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
 
-        [HttpPost("EnqueueRequest")]
+        [HttpPost("EnqueueRequestMessage")]
         
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PacResponseVm))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Azure.Response<SendReceipt>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -36,9 +36,9 @@ namespace PingAndCrop.RestAPI.Controllers
 
         }
 
-        [HttpPost("GetRequestMessages")]
+        [HttpGet("GetRequestMessages")]
 
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PacRequest>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PacRequest>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -56,9 +56,9 @@ namespace PingAndCrop.RestAPI.Controllers
             return requests;
         }
 
-        [HttpPost("GetResponseMessages")]
+        [HttpGet("GetResponseMessages")]
 
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PacResponseVm>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PacResponseVm>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -79,7 +79,7 @@ namespace PingAndCrop.RestAPI.Controllers
                     requests.Add(serializedMessage);
                 }
             }
-            var responsesVm = mapper.Map<List<PacResponse>, List<PacResponseVm>>(requests);
+            var responsesVm = Mapper!.Map<List<PacResponse>, List<PacResponseVm>>(requests);
             return responsesVm;
         }
     }

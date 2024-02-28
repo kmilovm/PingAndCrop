@@ -8,5 +8,6 @@
         public const string FinalizingRequest = "Finalizing request {0} at {1}";
         public const string NoQueueFoundAtConfig = "Cannot find queue name key in settings";
         public const string NoConfigFound = "Cannot find settings to inject";
+        public const string NoMapper = "Cannot find mapper instance to inject";
     }
 }

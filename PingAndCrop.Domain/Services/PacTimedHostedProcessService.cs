@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using PingAndCrop.Domain.Interfaces;
-using PingAndCrop.Objects.Responses;
+using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Services
 {

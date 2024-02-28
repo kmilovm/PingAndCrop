@@ -1,10 +1,11 @@
-using System.Reflection;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using PingAndCrop.Domain.Extensions;
 using PingAndCrop.RestAPI.Profiles;
+using PingAndCrop.Data;
 
 namespace PingAndCrop.RestAPI
 {
@@ -13,13 +14,12 @@ namespace PingAndCrop.RestAPI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddInjectedDependencies();
             builder.Services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.All;
+                    options.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 })
                 .AddJsonOptions(options =>
@@ -29,6 +29,10 @@ namespace PingAndCrop.RestAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            builder.Services.AddDbContext<DataContext>(options =>
+                options.UseSqlServer(connectionString));
+            builder.Services.AddInjectedDependencies();
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
 
             builder.Services.AddCors(options =>

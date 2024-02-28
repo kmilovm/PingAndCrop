@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PingAndCrop.Objects.Responses;
+using PingAndCrop.Objects.Models.Responses;
 using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.RestAPI.Profiles
@@ -9,7 +9,7 @@ namespace PingAndCrop.RestAPI.Profiles
         public AutoMapperProfile()
         {
             CreateMap<PacResponse, PacResponseVm>()
-                .ForMember(destiny => destiny.MessageId, source => source.MapFrom(src => src.Message.MessageId));
+                .ForMember(destiny => destiny.MessageId, source => source.MapFrom(src => src.Message!.MessageId));
         }
     }
 }

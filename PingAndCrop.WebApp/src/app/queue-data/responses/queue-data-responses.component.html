@@ -1,0 +1,31 @@
+<div>
+  <mat-accordion>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <i><b>Solved Requests</b></i>
+        </mat-panel-title>
+        <mat-panel-description>
+          Here you will find the requests analyzed
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <ng-container matColumnDef="MessageId">
+            <th mat-header-cell *matHeaderCellDef> Message Id. </th>
+            <td mat-cell *matCellDef="let request"> {{request.MessageId}} </td>
+          </ng-container>
+          <ng-container matColumnDef="CroppedResponse">
+            <th mat-header-cell *matHeaderCellDef> Cropped Data. </th>
+            <td mat-cell *matCellDef="let request"> {{request.CroppedResponse}} </td>
+          </ng-container>
+
+          <ng-container *ngIf="dataSource.data.length > 0">
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          </ng-container>
+          <tr mat-row *matRowDef="let request; columns: displayedColumns"></tr>
+
+      </table>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

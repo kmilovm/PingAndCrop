@@ -1,8 +1,9 @@
-﻿using PingAndCrop.Objects.Requests;
+﻿using PingAndCrop.Objects.Models;
+using PingAndCrop.Objects.Models.Requests;
 
 namespace PingAndCrop.Objects.ViewModels
 {
-    public record PacResponseVm
+    public record PacResponseVm : BaseEntity
     {
         public string? Error { get; set; }
         public string? RawResponse { get; set; }

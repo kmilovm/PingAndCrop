@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{30C556DE-9
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PingAndCrop.Objects", "PingAndCrop.Objects\PingAndCrop.Objects.csproj", "{C4DDAFED-1612-4120-B74A-0A976D95F53D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3D7252D3-2EAC-42F1-AD75-6C2918E026A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingAndCrop.Data", "PingAndCrop.Data\PingAndCrop.Data.csproj", "{83FC61D2-5613-4D64-9DB2-5097BBAEE676}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{C4DDAFED-1612-4120-B74A-0A976D95F53D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4DDAFED-1612-4120-B74A-0A976D95F53D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4DDAFED-1612-4120-B74A-0A976D95F53D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83FC61D2-5613-4D64-9DB2-5097BBAEE676}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83FC61D2-5613-4D64-9DB2-5097BBAEE676}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83FC61D2-5613-4D64-9DB2-5097BBAEE676}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83FC61D2-5613-4D64-9DB2-5097BBAEE676}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 		{619C771E-40F9-4A49-97C1-03D839AEF8F6} = {30C556DE-9B38-421A-9C89-2B02EF139A87}
 		{59ADCBE7-8971-48BB-B777-AF1B611F77CE} = {1A585FD1-48F8-4A2D-8313-7B0E548D7C75}
 		{C4DDAFED-1612-4120-B74A-0A976D95F53D} = {30C556DE-9B38-421A-9C89-2B02EF139A87}
+		{83FC61D2-5613-4D64-9DB2-5097BBAEE676} = {3D7252D3-2EAC-42F1-AD75-6C2918E026A8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F2E3FCF-E5EE-453F-BF51-9A8258EB7FEC}

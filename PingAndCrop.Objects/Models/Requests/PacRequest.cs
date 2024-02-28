@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace PingAndCrop.Objects.Requests
+namespace PingAndCrop.Objects.Models.Requests
 {
-    public class PacRequest
+    public record PacRequest : BaseEntity
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        
         public string UserId { get; set; }
         public required string RequestedUrl { get; set; }
     }

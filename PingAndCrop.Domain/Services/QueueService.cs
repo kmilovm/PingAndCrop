@@ -27,7 +27,7 @@ namespace PingAndCrop.Domain.Services
         {
             await EnsureQueueCreation(queueName);
             var queueClient = new QueueClient(AzureStorageConnectionString, queueName);
-            return await queueClient.ReceiveMessagesAsync(32);
+            return await queueClient.ReceiveMessagesAsync();
         }
 
         public async Task<Response<SendReceipt>> EnqueueMessage<TEnt>(string queueName, TEnt request)
