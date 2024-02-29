@@ -8,14 +8,14 @@ using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class PacRequestService : IPacRequestService
+    public class ManagementService : IManagementBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IQueueService _queueService;
         private readonly string _queueIn;
         private readonly string _queueOut;
-
-        public PacRequestService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IQueueService queueService)
+        
+        public ManagementService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IQueueService queueService)
         {
             _httpClientFactory = httpClientFactory;
             _queueService = queueService;
@@ -24,15 +24,21 @@ namespace PingAndCrop.Domain.Services
             _queueOut = config["QueueNameOut"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
         }
 
-        public async Task StoreResponses(IList<PacResponse> responses)
+        public async Task GetAndProcessMessages(string? queueIn)
         {
-            foreach (var pacResponse in responses)
+            var responses = new List<PacResponse>();
+            var messages = await _queueService.Get(queueIn!);
+            if (messages.HasValue && messages.Value.Length != 0)
             {
-                await _queueService.EnqueueMessage(_queueOut, pacResponse);
+                responses.AddRange(await ProcessRequests(messages.Value));
+                if (responses.Count != 0)
+                {
+                    await StoreResponses(responses);
+                }
             }
         }
 
-        public async Task<IEnumerable<PacResponse>> ProcessRequests(QueueMessage[] messages)
+        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<QueueMessage> messages)
         {
             var pacResponses = new List<PacResponse>();
             using var httpClient = _httpClientFactory.CreateClient();
@@ -48,12 +54,22 @@ namespace PingAndCrop.Domain.Services
                 {
                     RawResponse = await response.Content.ReadAsStringAsync(),
                     Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
-                    Request = request
+                    Request = request,
+                    PartitionKey = Guid.NewGuid().ToString(),
+                    RowKey = Guid.NewGuid().ToString()
                 };
                 pacResponses.Add(pacResponse);
-                await _queueService.DequeueMessage(_queueIn, requestsQueueMessage);
+                await _queueService.UnSet(_queueIn, requestsQueueMessage);
             }
             return pacResponses;
+        }
+
+        private async Task StoreResponses(IEnumerable<PacResponse> responses)
+        {
+            foreach (var pacResponse in responses)
+            {
+                await _queueService.Set(_queueOut, pacResponse);
+            }
         }
     }
 }

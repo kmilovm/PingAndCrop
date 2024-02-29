@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using PingAndCrop.Domain.Interfaces;
+using PingAndCrop.Domain.Extensions;
 
 namespace PingAndCrop.Tests
 {
@@ -7,7 +7,7 @@ namespace PingAndCrop.Tests
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IPacRequestService, IPacRequestService>();
+            services.AddInjectedDependencies();
         }
     }
 }

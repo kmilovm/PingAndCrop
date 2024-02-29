@@ -11,10 +11,10 @@ import { PacRequest } from '../models/pacRequest';
 })
 export class QueueDataService {
 
-  private apiUrl = environment.BaseApiUrl; // Replace with your API URL
+  private apiUrl = environment.BaseApiUrl;
   private queueInRoute = environment.QueueInRoute;
   private queueOutRoute = environment.QueueOutRoute;
-  private intervalMinutes = 0.5; // Fetch data every X minutes
+  private intervalMinutes = environment.QueryIntervalInMinutes;
 
   constructor(private http: HttpClient) {}
 
@@ -29,7 +29,10 @@ export class QueueDataService {
   private fetchDataBase<T>(url: string): Observable<Array<T>> {
     const uniqueParam = new Date().getTime();
     return timer(0, this.intervalMinutes * 60 * 1000).pipe(
-      switchMap(() => this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`)),
+      switchMap(() => {
+        console.log(`voy por datos :) ${new Date().toLocaleTimeString("es-ES")}`)
+        return this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`)
+      }),
       catchError((error) => {
         console.error('Error fetching data:', error);
         return [];

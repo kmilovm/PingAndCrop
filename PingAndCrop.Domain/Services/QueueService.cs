@@ -4,6 +4,7 @@ using Azure.Storage.Queues.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using PingAndCrop.Domain.Interfaces;
+using PingAndCrop.Objects.Models;
 
 namespace PingAndCrop.Domain.Services
 {
@@ -11,29 +12,30 @@ namespace PingAndCrop.Domain.Services
     {
         public string AzureStorageConnectionString { get; set; } = config["AzureStorageEndPoint"] ?? throw new InvalidOperationException();
 
-        public async Task<Response<bool>> EnsureQueueCreation(string queueName)
+        public async Task<Response<bool>> EnsureCreation(string queueName)
         {
             var queueClient = new QueueClient(AzureStorageConnectionString, queueName);
             await queueClient.CreateIfNotExistsAsync();
             return await queueClient.ExistsAsync();
         }
 
-        public async Task<Response<QueueMessage[]>> GetMessagesFromQueue(string queueName)
+        public async Task<Response<QueueMessage[]>> Get(string queueName, string userId = "")
         {
-            await EnsureQueueCreation(queueName);
+            await EnsureCreation(queueName);
             var queueClient = new QueueClient(AzureStorageConnectionString, queueName);
-            return await queueClient.ReceiveMessagesAsync();
+            var maxItemsPerRun = Convert.ToInt32(config["MaxItemsPerRun"]);
+            return await queueClient.ReceiveMessagesAsync(maxItemsPerRun);
         }
 
-        public async Task<Response<SendReceipt>> EnqueueMessage<TEnt>(string queueName, TEnt request)
+        public async Task<Response<SendReceipt>> Set<TEnt>(string queueName, TEnt request) where TEnt : BaseEntity
         {
-            await EnsureQueueCreation(queueName);
+            await EnsureCreation(queueName);
             var queueClient = new QueueClient(AzureStorageConnectionString, queueName);
             var response =  await queueClient.SendMessageAsync(JsonConvert.SerializeObject(request));
             return response;
         }
 
-        public async Task<Response> DequeueMessage(string queueNameIn, QueueMessage queueMessage)
+        public async Task<Response> UnSet(string queueNameIn, QueueMessage queueMessage)
         {
             var queueClient = new QueueClient(AzureStorageConnectionString, queueNameIn);
             var responseOut = await queueClient.DeleteMessageAsync(queueMessage.MessageId, queueMessage.PopReceipt);

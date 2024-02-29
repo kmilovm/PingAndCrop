@@ -20,7 +20,9 @@ export class EnqueueService {
     const pacRequest: PacRequest = {
       Id: Guid.create().toString(),
       UserId:  localStorage.getItem('userId') ?? "",
-      RequestedUrl: url
+      RequestedUrl: url,
+      PartitionKey: "Id",
+      RowKey: "Id"
     };
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'

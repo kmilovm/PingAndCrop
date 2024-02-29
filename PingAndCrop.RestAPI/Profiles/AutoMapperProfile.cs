@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Azure.Storage.Queues.Models;
+using Newtonsoft.Json;
 using PingAndCrop.Objects.Models.Responses;
 using PingAndCrop.Objects.ViewModels;
 
@@ -9,7 +11,7 @@ namespace PingAndCrop.RestAPI.Profiles
         public AutoMapperProfile()
         {
             CreateMap<PacResponse, PacResponseVm>()
-                .ForMember(destiny => destiny.MessageId, source => source.MapFrom(src => src.Message!.MessageId));
+                .ForMember(destiny => destiny.MessageId, source => source.MapFrom(src => JsonConvert.DeserializeObject<QueueMessage>(src.Message!).MessageId));
         }
     }
 }

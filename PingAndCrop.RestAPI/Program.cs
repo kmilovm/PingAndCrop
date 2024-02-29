@@ -29,12 +29,9 @@ namespace PingAndCrop.RestAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<DataContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder.Services.AddEFSupport(builder.Configuration);
             builder.Services.AddInjectedDependencies();
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
-
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(corsPolicyBuilder =>

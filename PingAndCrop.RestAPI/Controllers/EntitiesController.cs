@@ -11,7 +11,7 @@ using PingAndCrop.Objects.ViewModels;
 namespace PingAndCrop.RestAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class EntitiesController(DataContext dataContext, IMapper mapper) : ControllerBase
     {
         public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
@@ -25,7 +25,9 @@ namespace PingAndCrop.RestAPI.Controllers
 
         public async ValueTask<EntityEntry<PacRequest>> Store([FromBody] PacRequest pacRequest)
         {
-            return await dataContext.Requests.AddAsync(pacRequest);
+            var addResult = await dataContext.Requests.AddAsync(pacRequest);
+            await dataContext.SaveChangesAsync(CancellationToken.None);
+            return addResult;
         }
 
         [HttpGet("GetRequests")]
@@ -47,7 +49,7 @@ namespace PingAndCrop.RestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IEnumerable<PacResponseVm>> GetResponseMessages()
+        public async Task<IEnumerable<PacResponseVm>> GetResponses()
         {
             return await dataContext.Responses.ProjectTo<PacResponseVm>(Mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
         }

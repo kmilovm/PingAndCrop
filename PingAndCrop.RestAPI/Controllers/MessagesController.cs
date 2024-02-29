@@ -11,7 +11,7 @@ using PingAndCrop.Objects.ViewModels;
 namespace PingAndCrop.RestAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class MessagesController(ILogger<MessagesController> logger, IConfiguration config, IQueueService queueService, IMapper mapper) : ControllerBase
     {
         public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
@@ -27,7 +27,7 @@ namespace PingAndCrop.RestAPI.Controllers
         {
             logger.LogInformation(string.Format(StringMessages.InitiatingRequest, pacRequest.RequestedUrl, DateTime.Now.ToLongTimeString()));
             var queueName = config["QueueNameIn"];
-            var answer = await queueService.EnqueueMessage(queueName!, pacRequest);
+            var answer = await queueService.Set(queueName!, pacRequest);
             logger.LogInformation(string.Format(StringMessages.FinalizingRequest, pacRequest.RequestedUrl, DateTime.Now.ToLongTimeString()));
 
             if (answer.HasValue) return answer;
@@ -47,8 +47,8 @@ namespace PingAndCrop.RestAPI.Controllers
         {
             var queueName = config["QueueNameIn"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
             var requests = new List<PacRequest>();
-            var messages = await queueService.GetMessagesFromQueue(queueName);
-            if (messages.HasValue && messages.Value.Any())
+            var messages = await queueService.Get(queueName);
+            if (messages.HasValue && messages.Value.Length != 0)
             {
                 requests.AddRange(messages.Value.Select(message => JsonConvert.DeserializeObject<PacRequest>(message.MessageText))!);
             }
@@ -68,14 +68,14 @@ namespace PingAndCrop.RestAPI.Controllers
             var queueName = config["QueueNameOut"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
             var requests = new List<PacResponse>();
             
-            var messages = await queueService.GetMessagesFromQueue(queueName);
+            var messages = await queueService.Get(queueName);
             if (messages.HasValue && messages.Value.Length != 0)
             {
                 foreach (var queueMessage in messages.Value)
                 {
                     var serializedMessage = JsonConvert.DeserializeObject<PacResponse>(queueMessage.MessageText);
                     if (serializedMessage == null) continue;
-                    serializedMessage.Message = queueMessage;
+                    serializedMessage.Message = JsonConvert.SerializeObject(queueMessage);
                     requests.Add(serializedMessage);
                 }
             }

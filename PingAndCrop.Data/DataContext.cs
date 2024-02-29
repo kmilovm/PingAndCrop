@@ -8,12 +8,5 @@ namespace PingAndCrop.Data
     {
         public DbSet<PacResponse> Responses { get; set; }
         public DbSet<PacRequest> Requests { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<PacResponse>()
-                .HasOne(c => c.Request)
-                .WithOne();
-        }
     }
 }
