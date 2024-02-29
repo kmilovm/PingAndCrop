@@ -10,20 +10,24 @@ import { PacRequest } from '../../models/pacRequest';
   standalone: true,
   imports: [MatExpansionModule, MatTableModule, CommonModule],
   templateUrl: './queue-data-requests.component.html',
-  styleUrl: './queue-data-requests.component.css'
+  styleUrl: './queue-data-requests.component.css',
 })
-
 export class QueueDataRequestsComponent implements OnInit {
-  dataSource:MatTableDataSource<PacRequest> = new MatTableDataSource<PacRequest>();
+  dataSource: MatTableDataSource<PacRequest> = new MatTableDataSource<PacRequest>([]);
   displayedColumns: string[] = ['Id', 'RequestedUrl'];
   panelOpenState = true;
 
   constructor(private dataService: QueueDataService) {}
 
   ngOnInit() {
-    this.dataService.fetchDataRequests().subscribe((response:Array<PacRequest>) => {
-      this.dataSource = new MatTableDataSource<PacRequest>(response);
-      console.log('Fetched dataRequests:', response,"Date:",Date.now());
+    this.dataService.fetchDataRequests().subscribe({
+      next: (response: Array<PacRequest>) => {
+        this.dataSource = new MatTableDataSource<PacRequest>(response);
+        console.log(`Fetched dataRequests :) ${new Date().toLocaleTimeString("es-ES")} data: ${this.dataSource.data}`);
+      },
+      error: (error) => {
+        console.log(error);
+      }
     });
   }
 }

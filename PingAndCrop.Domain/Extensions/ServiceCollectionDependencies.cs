@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols;
 using PingAndCrop.Data;
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Domain.Services;
@@ -19,6 +18,8 @@ namespace PingAndCrop.Domain.Extensions
         {
             services.AddSingleton<IManagementBaseService, ManagementService>();
             services.AddSingleton<IQueueService, QueueService>();
+            services.AddSingleton<ITableService, TableService>();
+            services.AddScoped<IEntityService, EntityService>();
             services.AddHostedService<TimedProcessService>();
             return services;
         }

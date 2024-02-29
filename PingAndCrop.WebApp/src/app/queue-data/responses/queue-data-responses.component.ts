@@ -21,9 +21,14 @@ export class QueueDataResponsesComponent implements OnInit {
   constructor(private dataService: QueueDataService) {}
 
   ngOnInit() {
-    this.dataService.fetchDataResponses().subscribe((response:Array<PacResponse>) => {
-      this.dataSource = new MatTableDataSource<PacResponse>(response);
-      console.log('Fetched dataResponses:', response, "Date:",Date.now());
+    this.dataService.fetchDataResponses().subscribe({
+      next: (response:Array<PacResponse>) => {
+        this.dataSource = new MatTableDataSource<PacResponse>(response);
+        console.log(`Fetched dataResponses :) ${new Date().toLocaleTimeString("es-ES")} data: ${this.dataSource.data}`);
+      },
+      error: (error) => {
+        console.log(error);
+      }
     });
   }
 }

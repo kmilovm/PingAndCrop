@@ -11,11 +11,11 @@ namespace PingAndCrop.Domain.Services
     public class ManagementService : IManagementBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IQueueService _queueService;
+        private readonly ITableService _queueService;
         private readonly string _queueIn;
         private readonly string _queueOut;
-        
-        public ManagementService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IQueueService queueService)
+
+        public ManagementService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ITableService queueService)
         {
             _httpClientFactory = httpClientFactory;
             _queueService = queueService;
@@ -27,15 +27,12 @@ namespace PingAndCrop.Domain.Services
         public async Task GetAndProcessMessages(string? queueIn)
         {
             var responses = new List<PacResponse>();
-            var messages = await _queueService.Get(queueIn!);
-            if (messages.HasValue && messages.Value.Length != 0)
+            var messages = await _queueService.Get<PacResponse>(queueIn!);
+            await foreach (var page in messages.AsPages())
             {
-                responses.AddRange(await ProcessRequests(messages.Value));
-                if (responses.Count != 0)
-                {
-                    await StoreResponses(responses);
-                }
+                responses.AddRange(page.Values);
             }
+            await StoreResponses(responses);
         }
 
         private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<QueueMessage> messages)

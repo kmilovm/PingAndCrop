@@ -1,20 +1,19 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
+﻿using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using PingAndCrop.Data;
 using PingAndCrop.Domain.Constants;
+using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models.Requests;
+using PingAndCrop.Objects.Models.Responses;
 using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.RestAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class EntitiesController(DataContext dataContext, IMapper mapper) : ControllerBase
+    public class EntitiesController(IEntityService entityService) : ControllerBase
     {
-        public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
 
         [HttpPost("StoreRequest")]
 
@@ -23,11 +22,9 @@ namespace PingAndCrop.RestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async ValueTask<EntityEntry<PacRequest>> Store([FromBody] PacRequest pacRequest)
+        public async Task<bool> Store([FromBody] PacRequest pacRequest)
         {
-            var addResult = await dataContext.Requests.AddAsync(pacRequest);
-            await dataContext.SaveChangesAsync(CancellationToken.None);
-            return addResult;
+            return await entityService.Set(pacRequest);
         }
 
         [HttpGet("GetRequests")]
@@ -37,9 +34,9 @@ namespace PingAndCrop.RestAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 
-        public async Task<IEnumerable<PacRequest>> GetRequests()
+        public async Task<IEnumerable<PacRequestVm>> GetRequests()
         {
-            return await dataContext.Requests.AsNoTracking().ToListAsync();
+            return await entityService.Get<PacRequest, PacRequestVm>();
         }
 
         [HttpGet("GetResponses")]
@@ -51,7 +48,7 @@ namespace PingAndCrop.RestAPI.Controllers
 
         public async Task<IEnumerable<PacResponseVm>> GetResponses()
         {
-            return await dataContext.Responses.ProjectTo<PacResponseVm>(Mapper.ConfigurationProvider).AsNoTracking().ToListAsync();
+            return await entityService.Get<PacResponse, PacResponseVm>();
         }
     }
 }

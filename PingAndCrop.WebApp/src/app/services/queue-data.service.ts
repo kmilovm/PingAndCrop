@@ -23,15 +23,14 @@ export class QueueDataService {
   }
 
   public fetchDataResponses(): Observable<Array<PacResponse>> {
-    return this.fetchDataBase<PacResponse>(this.apiUrl + this.queueOutRoute)
+    return this.fetchDataBase<PacResponse>(this.apiUrl + this.queueOutRoute);
   }
 
   private fetchDataBase<T>(url: string): Observable<Array<T>> {
     const uniqueParam = new Date().getTime();
     return timer(0, this.intervalMinutes * 60 * 1000).pipe(
       switchMap(() => {
-        console.log(`voy por datos :) ${new Date().toLocaleTimeString("es-ES")}`)
-        return this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`)
+        return this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`);
       }),
       catchError((error) => {
         console.error('Error fetching data:', error);

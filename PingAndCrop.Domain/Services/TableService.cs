@@ -4,7 +4,6 @@ using Azure.Storage.Queues.Models;
 using Microsoft.Extensions.Configuration;
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models;
-using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Services
 {

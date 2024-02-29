@@ -2,10 +2,8 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using PingAndCrop.Domain.Extensions;
 using PingAndCrop.RestAPI.Profiles;
-using PingAndCrop.Data;
 
 namespace PingAndCrop.RestAPI
 {
