@@ -4,7 +4,7 @@ using PingAndCrop.Objects.Models;
 
 namespace PingAndCrop.Domain.Interfaces
 {
-    public interface IQueueService 
+    public interface IQueueService
     {
 
         Task<Response<bool>> EnsureCreation(string queueName);

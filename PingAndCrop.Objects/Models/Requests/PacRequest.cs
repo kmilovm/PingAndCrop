@@ -4,7 +4,7 @@ namespace PingAndCrop.Objects.Models.Requests
 {
     public record PacRequest : BaseEntity
     {
-        
+
         public string UserId { get; set; }
         public required string RequestedUrl { get; set; }
     }

@@ -13,7 +13,7 @@ namespace PingAndCrop.Domain.Services
         : BackgroundService
     {
         private readonly CronExpression _cronExp = CronExpression.Parse(config["CronExpression:Frequency"]);
-        
+
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -31,7 +31,7 @@ namespace PingAndCrop.Domain.Services
 
         private async Task ExecuteProcess(CancellationToken stoppingToken)
         {
-            
+
             try
             {
                 var queueIn = config["QueueNameIn"];
@@ -40,7 +40,7 @@ namespace PingAndCrop.Domain.Services
                 {
                     var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, Convert.ToBoolean(config["CronExpression:EnabledAtStart"]));
                     if (!nextExec.HasValue) continue;
-                    
+
                     using var scope = serviceScopeFactory.CreateScope();
                     var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IManagementBaseService>();
                     var delay = nextExec - DateTimeOffset.Now;

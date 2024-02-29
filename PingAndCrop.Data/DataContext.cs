@@ -9,7 +9,7 @@ namespace PingAndCrop.Data
     {
         public DbSet<PacResponse> Responses { get; set; }
         public DbSet<PacRequest> Requests { get; set; }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 #if DEBUG

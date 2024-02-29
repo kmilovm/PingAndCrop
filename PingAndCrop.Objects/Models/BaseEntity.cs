@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Azure;
+﻿using Azure;
 using Azure.Data.Tables;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PingAndCrop.Objects.Models
 {

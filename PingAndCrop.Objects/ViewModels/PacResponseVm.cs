@@ -11,7 +11,7 @@ namespace PingAndCrop.Objects.ViewModels
         public string? CroppedResponse { get; set; }
 
         public string MessageId { get; set; }
-        
+
         public PacRequest Request { get; set; }
     }
 }

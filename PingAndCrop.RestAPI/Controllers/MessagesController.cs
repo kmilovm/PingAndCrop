@@ -17,12 +17,12 @@ namespace PingAndCrop.RestAPI.Controllers
         public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
 
         [HttpPost("EnqueueRequestMessage")]
-        
+
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Azure.Response<SendReceipt>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        
+
         public async Task<Azure.Response<SendReceipt>> Enqueue([FromBody] PacRequest pacRequest)
         {
             logger.LogInformation(string.Format(StringMessages.InitiatingRequest, pacRequest.RequestedUrl, DateTime.Now.ToLongTimeString()));
@@ -67,7 +67,7 @@ namespace PingAndCrop.RestAPI.Controllers
         {
             var queueName = config["QueueNameOut"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
             var requests = new List<PacResponse>();
-            
+
             var messages = await queueService.Get(queueName);
             if (messages.HasValue && messages.Value.Length != 0)
             {

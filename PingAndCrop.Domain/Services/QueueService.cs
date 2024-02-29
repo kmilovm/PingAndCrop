@@ -31,7 +31,7 @@ namespace PingAndCrop.Domain.Services
         {
             await EnsureCreation(queueName);
             var queueClient = new QueueClient(AzureStorageConnectionString, queueName);
-            var response =  await queueClient.SendMessageAsync(JsonConvert.SerializeObject(request));
+            var response = await queueClient.SendMessageAsync(JsonConvert.SerializeObject(request));
             return response;
         }
 

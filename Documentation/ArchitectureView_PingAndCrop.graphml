@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Created by yFiles WPF 3.4.0.0-->
+<graphml xmlns:y="http://www.yworks.com/xml/yfiles-common/3.0" xmlns:xps="http://schemas.microsoft.com/xps/2005/06" xmlns:ywpf="http://www.yworks.com/xml/yfiles-wpf/3.0/xaml" xmlns:x="http://www.yworks.com/xml/yfiles-common/markup/3.0" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://www.yworks.com/xml/schema/graphml.wpf/3.0/ygraphml.xsd " xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://graphml.graphdrawing.org/xmlns">
+  <key id="d0" attr.type="boolean" attr.name="Expanded" for="node" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/Expanded">
+    <default>true</default>
+  </key>
+  <key id="d1" attr.type="string" attr.name="type" for="node" />
+  <key id="d2" attr.type="string" attr.name="path" for="node" />
+  <key id="d3" attr.type="string" attr.name="display_name" for="node" />
+  <key id="d4" attr.name="NodeLabels" for="node" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeLabels" />
+  <key id="d5" attr.name="NodeGeometry" for="node" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeGeometry" />
+  <key id="d6" attr.name="UserTags" for="all" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/UserTags" />
+  <key id="d7" attr.name="NodeStyle" for="node" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/NodeStyle" />
+  <key id="d8" attr.name="NodeViewState" for="node" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/1.1/NodeViewState" />
+  <key id="d9" attr.type="string" attr.name="dependency_type" for="edge" />
+  <key id="d10" attr.name="EdgeLabels" for="edge" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeLabels" />
+  <key id="d11" attr.name="EdgeGeometry" for="edge" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeGeometry" />
+  <key id="d12" attr.name="EdgeStyle" for="edge" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/EdgeStyle" />
+  <key id="d13" attr.name="EdgeViewState" for="edge" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/1.1/EdgeViewState" />
+  <key id="d14" attr.name="PortLabels" for="port" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortLabels" />
+  <key id="d15" attr.name="PortLocationParameter" for="port" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortLocationParameter">
+    <default />
+  </key>
+  <key id="d16" attr.name="PortStyle" for="port" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/PortStyle">
+    <default>
+      <x:Static Member="y:VoidPortStyle.Instance" />
+    </default>
+  </key>
+  <key id="d17" attr.name="PortViewState" for="port" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/folding/1.1/PortViewState" />
+  <key id="d18" attr.name="SharedData" y:attr.uri="http://www.yworks.com/xml/yfiles-common/2.0/SharedData" />
+  <data key="d18">
+    <y:SharedData />
+  </data>
+  <graph id="G">
+    <node id="n0">
+      <data key="d1"><![CDATA[0]]></data>
+      <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop]]></data>
+      <data key="d3"><![CDATA[API]]></data>
+      <data key="d4" />
+      <data key="d5">
+        <y:RectD X="0" Y="-180" Width="484" Height="230" />
+      </data>
+      <data key="d6" />
+      <data key="d7" />
+      <data key="d8">
+        <y:ViewState />
+      </data>
+      <graph id="n0:">
+        <node id="n0::n0">
+          <data key="d1"><![CDATA[0]]></data>
+          <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop\PingAndCrop.RestAPI]]></data>
+          <data key="d3"><![CDATA[PingAndCrop.RestAPI]]></data>
+          <data key="d4" />
+          <data key="d5">
+            <y:RectD X="50" Y="-90" Width="384" Height="90" />
+          </data>
+          <data key="d6" />
+          <data key="d7" />
+          <port name="p0">
+            <data key="d15" />
+          </port>
+        </node>
+      </graph>
+    </node>
+    <node id="n1">
+      <data key="d1"><![CDATA[0]]></data>
+      <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop]]></data>
+      <data key="d3"><![CDATA[Core]]></data>
+      <data key="d4" />
+      <data key="d5">
+        <y:RectD X="95" Y="-430" Width="902" Height="230" />
+      </data>
+      <data key="d6" />
+      <data key="d7" />
+      <data key="d8">
+        <y:ViewState />
+      </data>
+      <graph id="n1:">
+        <node id="n1::n0">
+          <data key="d1"><![CDATA[0]]></data>
+          <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop\PingAndCrop.Domain]]></data>
+          <data key="d3"><![CDATA[PingAndCrop.Domain]]></data>
+          <data key="d4" />
+          <data key="d5">
+            <y:RectD X="145" Y="-340" Width="388" Height="90" />
+          </data>
+          <data key="d6" />
+          <data key="d7" />
+          <port name="p0">
+            <data key="d15" />
+          </port>
+          <port name="p1">
+            <data key="d15" />
+          </port>
+          <port name="p2">
+            <data key="d15" />
+          </port>
+        </node>
+        <node id="n1::n1">
+          <data key="d1"><![CDATA[0]]></data>
+          <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop\PingAndCrop.Objects]]></data>
+          <data key="d3"><![CDATA[PingAndCrop.Objects]]></data>
+          <data key="d4" />
+          <data key="d5">
+            <y:RectD X="563" Y="-340" Width="384" Height="90" />
+          </data>
+          <data key="d6" />
+          <data key="d7" />
+          <port name="p0">
+            <data key="d15" />
+          </port>
+        </node>
+      </graph>
+    </node>
+    <node id="n2">
+      <data key="d1"><![CDATA[0]]></data>
+      <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop]]></data>
+      <data key="d3"><![CDATA[Data]]></data>
+      <data key="d4" />
+      <data key="d5">
+        <y:RectD X="291.25" Y="-715.5" Width="446" Height="230" />
+      </data>
+      <data key="d6" />
+      <data key="d7" />
+      <data key="d8">
+        <y:ViewState />
+      </data>
+      <graph id="n2:">
+        <node id="n2::n0">
+          <data key="d1"><![CDATA[0]]></data>
+          <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop\PingAndCrop.Data]]></data>
+          <data key="d3"><![CDATA[PingAndCrop.Data]]></data>
+          <data key="d4" />
+          <data key="d5">
+            <y:RectD X="341.25" Y="-625.5" Width="346" Height="90" />
+          </data>
+          <data key="d6" />
+          <data key="d7" />
+          <port name="p0">
+            <data key="d15" />
+          </port>
+          <port name="p1">
+            <data key="d15" />
+          </port>
+        </node>
+      </graph>
+    </node>
+    <node id="n3">
+      <data key="d1"><![CDATA[0]]></data>
+      <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop]]></data>
+      <data key="d3"><![CDATA[Tests]]></data>
+      <data key="d4" />
+      <data key="d5">
+        <y:RectD X="514" Y="-180" Width="448" Height="230" />
+      </data>
+      <data key="d6" />
+      <data key="d7" />
+      <data key="d8">
+        <y:ViewState />
+      </data>
+      <graph id="n3:">
+        <node id="n3::n0">
+          <data key="d1"><![CDATA[0]]></data>
+          <data key="d2"><![CDATA[C:\SourceCode\Personal\Pruebas\PingAndCrop\PingAndCrop.Tests]]></data>
+          <data key="d3"><![CDATA[PingAndCrop.Tests]]></data>
+          <data key="d4" />
+          <data key="d5">
+            <y:RectD X="564" Y="-90" Width="348" Height="90" />
+          </data>
+          <data key="d6" />
+          <data key="d7" />
+          <port name="p0">
+            <data key="d15" />
+          </port>
+        </node>
+      </graph>
+    </node>
+    <edge id="e0" source="n0::n0" target="n1::n0" sourceport="p0" targetport="p0">
+      <data key="d9"><![CDATA[Direct]]></data>
+      <data key="d12">
+        <ywpf:PolylineEdgeStyle>
+          <ywpf:PolylineEdgeStyle.Pen>
+            <Pen Brush="#FF5B90BF" Thickness="5" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+          </ywpf:PolylineEdgeStyle.Pen>
+          <ywpf:PolylineEdgeStyle.TargetArrow>
+            <ywpf:Arrow Brush="{y:GraphMLReference 3}" CropLength="1" Type="Triangle" IsFrozen="True">
+              <ywpf:Arrow.Pen>
+                <Pen Brush="#FF5B90BF" Thickness="3" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+              </ywpf:Arrow.Pen>
+            </ywpf:Arrow>
+          </ywpf:PolylineEdgeStyle.TargetArrow>
+        </ywpf:PolylineEdgeStyle>
+      </data>
+      <data key="d6" />
+    </edge>
+    <edge id="e1" source="n1::n0" target="n2::n0" sourceport="p1" targetport="p0">
+      <data key="d9"><![CDATA[Direct]]></data>
+      <data key="d12">
+        <ywpf:PolylineEdgeStyle>
+          <ywpf:PolylineEdgeStyle.Pen>
+            <Pen Brush="#FF5B90BF" Thickness="5" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+          </ywpf:PolylineEdgeStyle.Pen>
+          <ywpf:PolylineEdgeStyle.TargetArrow>
+            <ywpf:Arrow Brush="{y:GraphMLReference 3}" CropLength="1" Type="Triangle" IsFrozen="True">
+              <ywpf:Arrow.Pen>
+                <Pen Brush="#FF5B90BF" Thickness="3" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+              </ywpf:Arrow.Pen>
+            </ywpf:Arrow>
+          </ywpf:PolylineEdgeStyle.TargetArrow>
+        </ywpf:PolylineEdgeStyle>
+      </data>
+      <data key="d6" />
+      <data key="d13">
+        <y:ViewState />
+      </data>
+    </edge>
+    <edge id="e2" source="n2::n0" target="n1::n1" sourceport="p1" targetport="p0">
+      <data key="d9"><![CDATA[Direct]]></data>
+      <data key="d12">
+        <ywpf:PolylineEdgeStyle>
+          <ywpf:PolylineEdgeStyle.Pen>
+            <Pen Brush="#FF5B90BF" Thickness="2" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+          </ywpf:PolylineEdgeStyle.Pen>
+          <ywpf:PolylineEdgeStyle.TargetArrow>
+            <ywpf:Arrow Brush="{y:GraphMLReference 3}" CropLength="1" Type="Triangle" IsFrozen="True">
+              <ywpf:Arrow.Pen>
+                <Pen Brush="#FF5B90BF" Thickness="3" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+              </ywpf:Arrow.Pen>
+            </ywpf:Arrow>
+          </ywpf:PolylineEdgeStyle.TargetArrow>
+        </ywpf:PolylineEdgeStyle>
+      </data>
+      <data key="d6" />
+      <data key="d13">
+        <y:ViewState />
+      </data>
+    </edge>
+    <edge id="e3" source="n3::n0" target="n1::n0" sourceport="p0" targetport="p2">
+      <data key="d9"><![CDATA[Direct]]></data>
+      <data key="d11" />
+      <data key="d12">
+        <ywpf:PolylineEdgeStyle>
+          <ywpf:PolylineEdgeStyle.Pen>
+            <Pen Brush="#FF5B90BF" Thickness="2" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+          </ywpf:PolylineEdgeStyle.Pen>
+          <ywpf:PolylineEdgeStyle.TargetArrow>
+            <ywpf:Arrow Brush="{y:GraphMLReference 3}" CropLength="1" Type="Triangle" IsFrozen="True">
+              <ywpf:Arrow.Pen>
+                <Pen Brush="#FF5B90BF" Thickness="3" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" />
+              </ywpf:Arrow.Pen>
+            </ywpf:Arrow>
+          </ywpf:PolylineEdgeStyle.TargetArrow>
+        </ywpf:PolylineEdgeStyle>
+      </data>
+      <data key="d6" />
+    </edge>
+  </graph>
+</graphml>

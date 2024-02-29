@@ -11,9 +11,9 @@ namespace PingAndCrop.Domain.Services
     public class EntityService(IMapper mapper, DataContext dataContext) : IEntityService
     {
         public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
-        
-        public async Task<IEnumerable<TEntVm>> Get<TEnt, TEntVm>(string userId = "") 
-            where TEnt : BaseEntity 
+
+        public async Task<IEnumerable<TEntVm>> Get<TEnt, TEntVm>(string userId = "")
+            where TEnt : BaseEntity
             where TEntVm : BaseEntity
         {
             return await dataContext.Set<TEnt>().AsNoTracking().ProjectTo<TEntVm>(Mapper.ConfigurationProvider).ToListAsync();

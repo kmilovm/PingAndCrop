@@ -1,9 +1,9 @@
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System.Text.Json;
 using PingAndCrop.Domain.Extensions;
 using PingAndCrop.RestAPI.Profiles;
+using System.Text.Json;
 
 namespace PingAndCrop.RestAPI
 {
@@ -41,7 +41,7 @@ namespace PingAndCrop.RestAPI
             });
 
             builder.Services.AddSingleton(builder.Configuration);
-            
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())

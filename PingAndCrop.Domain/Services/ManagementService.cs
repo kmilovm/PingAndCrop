@@ -17,7 +17,7 @@ namespace PingAndCrop.Domain.Services
         private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> requests)
         {
             var pacResponses = new List<PacResponse>();
-            
+
             foreach (var request in requests)
             {
                 if (!Uri.IsWellFormedUriString(request!.RequestedUrl, UriKind.Absolute)) continue;

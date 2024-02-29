@@ -10,7 +10,7 @@ namespace PingAndCrop.Domain.Services
     public class TableService(IConfiguration config) : ITableService
     {
         public string AzureStorageConnectionString { get; set; } = config["AzureStorageEndPoint"] ?? throw new InvalidOperationException();
-        
+
         public async Task<TableClient> EnsureCreation(string tableName)
         {
             var tableServiceClient = new TableServiceClient(AzureStorageConnectionString);
