@@ -34,10 +34,11 @@ namespace PingAndCrop.Domain.Services
 
         public async Task<bool> UnSet<TEnt>(TEnt request) where TEnt : BaseEntity
         {
-            var entityToRemove = await dataContext.Set<TEnt>().SingleOrDefaultAsync(ent => ent.Id == request.Id);
+            var entityToRemove = await dataContext.Set<TEnt>().SingleOrDefaultAsync(ent => ent.Id.Equals(request.Id));
             if (entityToRemove == default) return false;
             dataContext.Set<TEnt>().Remove(entityToRemove);
-            return await dataContext.SaveChangesAsync() > 0;
+            var result = await dataContext.SaveChangesAsync() > 0;
+            return result;
         }
     }
 }

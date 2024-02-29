@@ -35,6 +35,7 @@ namespace PingAndCrop.Domain.Services
             try
             {
                 var queueIn = config["QueueNameIn"];
+                await Task.Yield();
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, Convert.ToBoolean(config["CronExpression:EnabledAtStart"]));
@@ -42,6 +43,8 @@ namespace PingAndCrop.Domain.Services
                     
                     using var scope = serviceScopeFactory.CreateScope();
                     var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IManagementBaseService>();
+                    var delay = nextExec - DateTimeOffset.Now;
+                    await Task.Delay(delay.Value, stoppingToken);
                     await scopedProcessingService.GetAndProcessMessages(queueIn);
                 }
             }

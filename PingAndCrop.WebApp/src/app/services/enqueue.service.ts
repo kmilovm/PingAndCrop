@@ -17,7 +17,7 @@ export class EnqueueService {
       console.error("url cannot be null or empty");
       return;
     }
-    const Id = Guid.create().toString();
+    const Id = Guid.create().toString().toUpperCase();
     const pacRequest: PacRequest = {
       Id: Id,
       UserId:  localStorage.getItem('userId') ?? "",

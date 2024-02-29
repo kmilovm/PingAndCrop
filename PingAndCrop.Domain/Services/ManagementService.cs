@@ -14,30 +14,30 @@ namespace PingAndCrop.Domain.Services
             await ProcessRequests(responses);
         }
 
-        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> messages)
+        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> requests)
         {
             var pacResponses = new List<PacResponse>();
             
-            foreach (var requestsMessage in messages)
+            foreach (var request in requests)
             {
-                if (!Uri.IsWellFormedUriString(requestsMessage!.RequestedUrl, UriKind.Absolute)) continue;
+                if (!Uri.IsWellFormedUriString(request!.RequestedUrl, UriKind.Absolute)) continue;
                 using var httpClient = httpClientFactory.CreateClient();
                 httpClient.Timeout = TimeSpan.FromSeconds(30);
-                httpClient.BaseAddress = new Uri(requestsMessage!.RequestedUrl);
-                var response = await httpClient.GetAsync(requestsMessage.RequestedUrl);
+                httpClient.BaseAddress = new Uri(request!.RequestedUrl);
+                var response = await httpClient.GetAsync(request.RequestedUrl);
                 response.EnsureSuccessStatusCode();
                 var pacResponse = new PacResponse()
                 {
                     RawResponse = await response.Content.ReadAsStringAsync(),
                     Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
-                    Request = requestsMessage,
-                    Message = JsonConvert.SerializeObject(requestsMessage),
+                    Request = request,
+                    Message = JsonConvert.SerializeObject(request),
                     Timestamp = DateTimeOffset.UtcNow,
                     PartitionKey = Guid.NewGuid().ToString(),
                     RowKey = Guid.NewGuid().ToString()
                 };
                 pacResponses.Add(pacResponse);
-                await entityService.UnSet(requestsMessage);
+                await entityService.UnSet(request);
             }
             await StoreResponses(pacResponses);
             return pacResponses;

@@ -15,7 +15,7 @@ import { QueueDataRequestsComponent } from './queue-data/requests/queue-data-req
 })
 export class AppComponent {
   constructor() {
-    localStorage.setItem('userId', Guid.create().toString());
+    localStorage.setItem('userId', Guid.create().toString().toUpperCase());
   }
   title = 'PingAndCrop';
 }
