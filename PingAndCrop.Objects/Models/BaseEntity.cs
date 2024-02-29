@@ -10,7 +10,7 @@ namespace PingAndCrop.Objects.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
-        public DateTimeOffset? Timestamp { get; set; }
+        public DateTimeOffset? Timestamp { get; set; } = DateTimeOffset.UtcNow;
         [NotMapped]
         [JsonIgnore]
         public ETag ETag { get; set; }

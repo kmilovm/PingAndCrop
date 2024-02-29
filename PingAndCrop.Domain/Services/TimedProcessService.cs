@@ -1,5 +1,6 @@
 ﻿using Cronos;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PingAndCrop.Domain.Interfaces;
 
@@ -7,7 +8,7 @@ namespace PingAndCrop.Domain.Services
 {
     public class TimedProcessService(
         IConfiguration config,
-        IManagementBaseService managementService,
+        IServiceScopeFactory serviceScopeFactory,
         IHostApplicationLifetime lifetime)
         : BackgroundService
     {
@@ -39,11 +40,9 @@ namespace PingAndCrop.Domain.Services
                     var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, Convert.ToBoolean(config["CronExpression:EnabledAtStart"]));
                     if (!nextExec.HasValue) continue;
                     
-                    await managementService.GetAndProcessMessages(queueIn);
-
-                    var valueMilliseconds = (nextExec - DateTime.Now).Value.Milliseconds;
-                    valueMilliseconds = valueMilliseconds > 0 ? valueMilliseconds : 1000;
-                    await Task.Delay(valueMilliseconds, stoppingToken);
+                    using var scope = serviceScopeFactory.CreateScope();
+                    var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IManagementBaseService>();
+                    await scopedProcessingService.GetAndProcessMessages(queueIn);
                 }
             }
             catch (Exception e)

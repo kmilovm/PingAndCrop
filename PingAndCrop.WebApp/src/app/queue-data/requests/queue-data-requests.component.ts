@@ -23,7 +23,7 @@ export class QueueDataRequestsComponent implements OnInit {
     this.dataService.fetchDataRequests().subscribe({
       next: (response: Array<PacRequest>) => {
         this.dataSource = new MatTableDataSource<PacRequest>(response);
-        console.log(`Fetched dataRequests :) ${new Date().toLocaleTimeString("es-ES")} data: ${this.dataSource.data}`);
+        console.log('Fetched dataRequests:', response, "Date:",Date.now());
       },
       error: (error) => {
         console.log(error);

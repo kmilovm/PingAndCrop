@@ -1,8 +1,4 @@
-﻿using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using PingAndCrop.Domain.Constants;
+﻿using Microsoft.AspNetCore.Mvc;
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models.Requests;
 using PingAndCrop.Objects.Models.Responses;

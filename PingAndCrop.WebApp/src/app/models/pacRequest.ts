@@ -4,5 +4,6 @@ export interface PacRequest
      UserId: string,
      RequestedUrl: string,
      PartitionKey: string,
-     RowKey: string
+     RowKey: string,
+     Timestamp?: number
 }

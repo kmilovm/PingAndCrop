@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using PingAndCrop.Data;
 using PingAndCrop.Domain.Constants;
 using PingAndCrop.Domain.Interfaces;
@@ -9,7 +8,7 @@ using PingAndCrop.Objects.Models;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class EntityService(IConfiguration config, IMapper mapper, DataContext dataContext) : IEntityService
+    public class EntityService(IMapper mapper, DataContext dataContext) : IEntityService
     {
         public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
         

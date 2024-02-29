@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PingAndCrop.Domain.Constants;
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models.Requests;
@@ -9,7 +8,7 @@ namespace PingAndCrop.RestAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TableController(ILogger<MessagesController> logger, IConfiguration config, ITableService tableService, IMapper mapper) : ControllerBase
+    public class TableController(ILogger<MessagesController> logger, IConfiguration config, ITableService tableService) : ControllerBase
     {
         [HttpGet("GetRecordMessages")]
 

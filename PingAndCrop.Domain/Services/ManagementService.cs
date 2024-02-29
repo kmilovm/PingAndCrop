@@ -1,63 +1,45 @@
-﻿using Azure.Storage.Queues.Models;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
-using PingAndCrop.Domain.Constants;
+﻿using Newtonsoft.Json;
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models.Requests;
 using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Services
 {
-    public class ManagementService : IManagementBaseService
+    public class ManagementService(IHttpClientFactory httpClientFactory, IEntityService entityService)
+        : IManagementBaseService
     {
-        private readonly IHttpClientFactory _httpClientFactory;
-        private readonly ITableService _queueService;
-        private readonly string _queueIn;
-        private readonly string _queueOut;
-
-        public ManagementService(IHttpClientFactory httpClientFactory, IConfiguration configuration, ITableService queueService)
-        {
-            _httpClientFactory = httpClientFactory;
-            _queueService = queueService;
-            var config = configuration ?? throw new ArgumentException(StringMessages.NoConfigFound);
-            _queueIn = config["QueueNameIn"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
-            _queueOut = config["QueueNameOut"] ?? throw new ArgumentException(StringMessages.NoQueueFoundAtConfig);
-        }
-
         public async Task GetAndProcessMessages(string? queueIn)
         {
-            var responses = new List<PacResponse>();
-            var messages = await _queueService.Get<PacResponse>(queueIn!);
-            await foreach (var page in messages.AsPages())
-            {
-                responses.AddRange(page.Values);
-            }
-            await StoreResponses(responses);
+            var responses = await entityService.GetAll<PacRequest>();
+            await ProcessRequests(responses);
         }
 
-        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<QueueMessage> messages)
+        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> messages)
         {
             var pacResponses = new List<PacResponse>();
-            using var httpClient = _httpClientFactory.CreateClient();
-            foreach (var requestsQueueMessage in messages)
+            
+            foreach (var requestsMessage in messages)
             {
-                var request = JsonConvert.DeserializeObject<PacRequest>(requestsQueueMessage.MessageText);
-                if (request == null) continue;
-                if (!Uri.IsWellFormedUriString(request!.RequestedUrl, UriKind.Absolute)) continue;
-                httpClient.BaseAddress = new Uri(request!.RequestedUrl);
-                var response = await httpClient.GetAsync(request.RequestedUrl);
+                if (!Uri.IsWellFormedUriString(requestsMessage!.RequestedUrl, UriKind.Absolute)) continue;
+                using var httpClient = httpClientFactory.CreateClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(30);
+                httpClient.BaseAddress = new Uri(requestsMessage!.RequestedUrl);
+                var response = await httpClient.GetAsync(requestsMessage.RequestedUrl);
                 response.EnsureSuccessStatusCode();
                 var pacResponse = new PacResponse()
                 {
                     RawResponse = await response.Content.ReadAsStringAsync(),
                     Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
-                    Request = request,
+                    Request = requestsMessage,
+                    Message = JsonConvert.SerializeObject(requestsMessage),
+                    Timestamp = DateTimeOffset.UtcNow,
                     PartitionKey = Guid.NewGuid().ToString(),
                     RowKey = Guid.NewGuid().ToString()
                 };
                 pacResponses.Add(pacResponse);
-                await _queueService.UnSet(_queueIn, requestsQueueMessage);
+                await entityService.UnSet(requestsMessage);
             }
+            await StoreResponses(pacResponses);
             return pacResponses;
         }
 
@@ -65,7 +47,7 @@ namespace PingAndCrop.Domain.Services
         {
             foreach (var pacResponse in responses)
             {
-                await _queueService.Set(_queueOut, pacResponse);
+                await entityService.Set(pacResponse);
             }
         }
     }

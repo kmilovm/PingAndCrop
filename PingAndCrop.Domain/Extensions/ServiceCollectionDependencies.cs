@@ -16,15 +16,15 @@ namespace PingAndCrop.Domain.Extensions
         /// <returns></returns>
         public static IServiceCollection AddInjectedDependencies(this IServiceCollection services)
         {
-            services.AddSingleton<IManagementBaseService, ManagementService>();
             services.AddSingleton<IQueueService, QueueService>();
             services.AddSingleton<ITableService, TableService>();
+            services.AddScoped<IManagementBaseService, ManagementService>();
             services.AddScoped<IEntityService, EntityService>();
             services.AddHostedService<TimedProcessService>();
             return services;
         }
 
-        public static IServiceCollection AddEFSupport(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddEfSupport(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             services.AddDbContext<DataContext>(options =>

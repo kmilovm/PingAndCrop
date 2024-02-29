@@ -14,7 +14,7 @@ import { PacResponse } from '../../models/pacResponse';
 })
 
 export class QueueDataResponsesComponent implements OnInit {
-  dataSource:MatTableDataSource<PacResponse> = new MatTableDataSource<PacResponse>();
+  dataSource:MatTableDataSource<PacResponse> = new MatTableDataSource<PacResponse>([]);
   displayedColumns: string[] = ['MessageId', 'CroppedResponse'];
   panelOpenState = true;
 
@@ -24,7 +24,7 @@ export class QueueDataResponsesComponent implements OnInit {
     this.dataService.fetchDataResponses().subscribe({
       next: (response:Array<PacResponse>) => {
         this.dataSource = new MatTableDataSource<PacResponse>(response);
-        console.log(`Fetched dataResponses :) ${new Date().toLocaleTimeString("es-ES")} data: ${this.dataSource.data}`);
+        console.log('Fetched dataResponses:', response, "Date:",Date.now());
       },
       error: (error) => {
         console.log(error);

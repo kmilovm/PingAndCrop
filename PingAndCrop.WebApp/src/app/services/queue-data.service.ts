@@ -27,9 +27,10 @@ export class QueueDataService {
   }
 
   private fetchDataBase<T>(url: string): Observable<Array<T>> {
-    const uniqueParam = new Date().getTime();
+
     return timer(0, this.intervalMinutes * 60 * 1000).pipe(
       switchMap(() => {
+        const uniqueParam = new Date().getTime();
         return this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`);
       }),
       catchError((error) => {

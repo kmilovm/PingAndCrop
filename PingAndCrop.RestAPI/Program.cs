@@ -27,7 +27,7 @@ namespace PingAndCrop.RestAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient();
-            builder.Services.AddEFSupport(builder.Configuration);
+            builder.Services.AddEfSupport(builder.Configuration);
             builder.Services.AddInjectedDependencies();
             builder.Services.AddAutoMapper(typeof(AutoMapperProfile));
             builder.Services.AddCors(options =>

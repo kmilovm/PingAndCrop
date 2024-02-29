@@ -17,12 +17,13 @@ export class EnqueueService {
       console.error("url cannot be null or empty");
       return;
     }
+    const Id = Guid.create().toString();
     const pacRequest: PacRequest = {
-      Id: Guid.create().toString(),
+      Id: Id,
       UserId:  localStorage.getItem('userId') ?? "",
       RequestedUrl: url,
-      PartitionKey: "Id",
-      RowKey: "Id"
+      PartitionKey: Id,
+      RowKey: Id
     };
     let headers = new HttpHeaders({
       'Content-Type': 'application/json'
