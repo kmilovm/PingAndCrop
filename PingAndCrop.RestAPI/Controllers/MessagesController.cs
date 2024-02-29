@@ -10,12 +10,19 @@ using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.RestAPI.Controllers
 {
+    /// <summary>Provide a controller for handing messages at Azure Queue</summary>
     [ApiController]
     [Route("api/[controller]")]
     public class MessagesController(ILogger<MessagesController> logger, IConfiguration config, IQueueService queueService, IMapper mapper) : ControllerBase
     {
         public IMapper Mapper { get; } = mapper ?? throw new ArgumentException(StringMessages.NoMapper);
 
+        /// <summary>Enqueues the specified pac request.</summary>
+        /// <param name="pacRequest">The pac request.</param>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        /// <exception cref="Microsoft.AspNetCore.Server.IIS.BadHttpRequestException"></exception>
         [HttpPost("EnqueueRequestMessage")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Azure.Response<SendReceipt>))]
@@ -36,6 +43,11 @@ namespace PingAndCrop.RestAPI.Controllers
 
         }
 
+        /// <summary>Gets the request messages.</summary>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        /// <exception cref="System.ArgumentException"></exception>
         [HttpGet("GetRequestMessages")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PacRequest>))]
@@ -56,6 +68,11 @@ namespace PingAndCrop.RestAPI.Controllers
             return requests;
         }
 
+        /// <summary>Gets the response messages.</summary>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        /// <exception cref="System.ArgumentException"></exception>
         [HttpGet("GetResponseMessages")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PacResponseVm>))]

@@ -6,11 +6,17 @@ using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.RestAPI.Controllers
 {
+    /// <summary>Controller for handing entities at DB</summary>
     [ApiController]
     [Route("api/[controller]")]
     public class EntitiesController(IEntityService entityService) : ControllerBase
     {
 
+        /// <summary>Stores the specified pac request.</summary>
+        /// <param name="pacRequest">The pac request.</param>
+        /// <returns>
+        ///   <br />
+        /// </returns>
         [HttpPost("StoreRequest")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PacResponseVm))]
@@ -23,6 +29,10 @@ namespace PingAndCrop.RestAPI.Controllers
             return await entityService.Set(pacRequest);
         }
 
+        /// <summary>Gets the requests.</summary>
+        /// <returns>
+        ///   <br />
+        /// </returns>
         [HttpGet("GetRequests")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PacRequest>))]
@@ -35,6 +45,10 @@ namespace PingAndCrop.RestAPI.Controllers
             return await entityService.Get<PacRequest, PacRequestVm>();
         }
 
+        /// <summary>Gets the responses.</summary>
+        /// <returns>
+        ///   <br />
+        /// </returns>
         [HttpGet("GetResponses")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PacResponseVm>))]

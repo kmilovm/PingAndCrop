@@ -7,6 +7,7 @@ using PingAndCrop.Objects.ViewModels;
 
 namespace PingAndCrop.RestAPI.Profiles
 {
+    /// <summary>Provides the mapping between vms and models</summary>
     public class AutoMapperProfile : Profile
     {
         public AutoMapperProfile()
