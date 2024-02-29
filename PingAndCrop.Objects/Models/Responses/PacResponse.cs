@@ -1,6 +1,4 @@
-﻿using PingAndCrop.Objects.Models.Requests;
-
-namespace PingAndCrop.Objects.Models.Responses
+﻿namespace PingAndCrop.Objects.Models.Responses
 {
     public record PacResponse : BaseEntity
     {

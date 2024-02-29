@@ -16,7 +16,12 @@ namespace PingAndCrop.Objects.Models.Requests
         /// </summary>
         public PacRequestValidator()
         {
-            RuleFor(req => req.RequestedUrl).NotNull().NotEmpty().WithMessage("Requested url property is needed to start the process!");
+            RuleFor(req => req.RequestedUrl).NotNull().NotEmpty().Must(BeAValidUri).WithMessage("Requested url property is needed to start the process!");
+            
+        }
+        private bool BeAValidUri(string uri)
+        {
+            return Uri.TryCreate(uri, UriKind.Absolute, out _);
         }
     }
 }
