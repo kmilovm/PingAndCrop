@@ -10,7 +10,5 @@ namespace PingAndCrop.Objects.Models.Responses
         public string? CroppedResponse => RawResponse?[..Math.Min(1000, RawResponse.Length)];
 
         public string? Message { get; set; }
-
-        public PacRequest Request { get; set; }
     }
 }

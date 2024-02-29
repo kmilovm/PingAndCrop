@@ -14,11 +14,11 @@ namespace PingAndCrop.Domain.Services
             await ProcessRequests(responses);
         }
 
-        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> requests)
+        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> pacRequests)
         {
             var pacResponses = new List<PacResponse>();
 
-            foreach (var request in requests)
+            foreach (var request in pacRequests)
             {
                 if (!Uri.IsWellFormedUriString(request!.RequestedUrl, UriKind.Absolute)) continue;
                 using var httpClient = httpClientFactory.CreateClient();
@@ -30,15 +30,15 @@ namespace PingAndCrop.Domain.Services
                 {
                     RawResponse = await response.Content.ReadAsStringAsync(),
                     Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
-                    Request = request,
                     Message = JsonConvert.SerializeObject(request),
                     Timestamp = DateTimeOffset.UtcNow,
                     PartitionKey = Guid.NewGuid().ToString(),
                     RowKey = Guid.NewGuid().ToString()
                 };
                 pacResponses.Add(pacResponse);
-                await entityService.UnSet(request);
             }
+
+            await RemoveRequests(pacRequests);
             await StoreResponses(pacResponses);
             return pacResponses;
         }
@@ -48,6 +48,14 @@ namespace PingAndCrop.Domain.Services
             foreach (var pacResponse in responses)
             {
                 await entityService.Set(pacResponse);
+            }
+        }
+
+        private async Task RemoveRequests(IEnumerable<PacRequest> requests)
+        {
+            foreach (var pacRequest in requests)
+            {
+                await entityService.UnSet(pacRequest);
             }
         }
     }
