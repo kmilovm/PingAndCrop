@@ -7,6 +7,7 @@ using PingAndCrop.Domain.Services;
 
 namespace PingAndCrop.Domain.Extensions
 {
+    /// <summary>Extension class for registering own DI and DataContext</summary>
     public static class ServiceCollectionDependencies
     {
         /// <summary>
@@ -24,6 +25,13 @@ namespace PingAndCrop.Domain.Extensions
             return services;
         }
 
+        /// <summary>Adds the entity framework support.</summary>
+        /// <param name="services">The services.</param>
+        /// <param name="config">The configuration.</param>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">Connection string 'DefaultConnection' not found.</exception>
         public static IServiceCollection AddEfSupport(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

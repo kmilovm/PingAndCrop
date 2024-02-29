@@ -5,16 +5,18 @@ using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.Domain.Services
 {
+    /// <summary>Service created for handling the requests of the TimedHostedService</summary>
     public class ManagementService(IHttpClientFactory httpClientFactory, IEntityService entityService)
         : IManagementBaseService
     {
+        /// <inheritdoc />
         public async Task GetAndProcessMessages(string? queueIn)
         {
             var responses = await entityService.GetAll<PacRequest>();
             await ProcessRequests(responses);
         }
 
-        private async Task<IEnumerable<PacResponse>> ProcessRequests(IEnumerable<PacRequest> pacRequests)
+        private async Task ProcessRequests(IEnumerable<PacRequest> pacRequests)
         {
             var pacResponses = new List<PacResponse>();
 
@@ -40,7 +42,6 @@ namespace PingAndCrop.Domain.Services
 
             await RemoveRequests(pacRequests);
             await StoreResponses(pacResponses);
-            return pacResponses;
         }
 
         private async Task StoreResponses(IEnumerable<PacResponse> responses)

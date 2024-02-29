@@ -1,5 +1,6 @@
 ﻿namespace PingAndCrop.Domain.Constants
 {
+    /// <summary>Struct for grouping all string messages used at application</summary>
     public struct StringMessages
     {
         public const string InitiatingRequest = "Initializing request {0} at {1}";

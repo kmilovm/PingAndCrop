@@ -6,10 +6,17 @@ using PingAndCrop.Objects.Models.Responses;
 
 namespace PingAndCrop.RestAPI.Controllers
 {
+    /// <summary>Provides a controller for handling records at Azure Table</summary>
     [ApiController]
     [Route("api/[controller]")]
     public class TableController(ILogger<MessagesController> logger, IConfiguration config, ITableService tableService) : ControllerBase
     {
+        /// <summary>Gets the record messages.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>
+        ///   <br />
+        /// </returns>
+        /// <exception cref="System.ArgumentException"></exception>
         [HttpGet("GetRecordMessages")]
 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PacRequest>))]
