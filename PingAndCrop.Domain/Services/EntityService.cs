@@ -36,7 +36,7 @@ namespace PingAndCrop.Domain.Services
         {
             var entityToRemove = await dataContext.Set<TEnt>().SingleOrDefaultAsync(ent => ent.Id.Equals(request.Id));
             if (entityToRemove == default) return false;
-            dataContext.Set<TEnt>().Remove(entityToRemove);
+            dataContext.Entry(entityToRemove).State = EntityState.Deleted;
             var result = await dataContext.SaveChangesAsync() > 0;
             return result;
         }

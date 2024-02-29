@@ -41,10 +41,11 @@ namespace PingAndCrop.Domain.Services
                     var nextExec = _cronExp.GetNextOccurrence(DateTime.UtcNow, Convert.ToBoolean(config["CronExpression:EnabledAtStart"]));
                     if (!nextExec.HasValue) continue;
 
-                    using var scope = serviceScopeFactory.CreateScope();
-                    var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IManagementBaseService>();
                     var delay = nextExec - DateTimeOffset.Now;
                     await Task.Delay(delay.Value, stoppingToken);
+                    
+                    using var scope = serviceScopeFactory.CreateScope();
+                    var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IManagementBaseService>();
                     await scopedProcessingService.GetAndProcessMessages(queueIn);
                 }
             }
