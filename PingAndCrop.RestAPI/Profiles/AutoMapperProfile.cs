@@ -12,8 +12,7 @@ namespace PingAndCrop.RestAPI.Profiles
     {
         public AutoMapperProfile()
         {
-            CreateMap<PacResponse, PacResponseVm>()
-                .ForMember(destiny => destiny.MessageId, source => source.MapFrom(src => JsonConvert.DeserializeObject<QueueMessage>(src.Message!).MessageId));
+            CreateMap<PacResponse, PacResponseVm>();
             CreateMap<PacRequest, PacRequestVm>();
         }
     }

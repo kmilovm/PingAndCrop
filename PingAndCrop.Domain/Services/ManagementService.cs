@@ -33,12 +33,13 @@ namespace PingAndCrop.Domain.Services
                 response.EnsureSuccessStatusCode();
                 var pacResponse = new PacResponse()
                 {
+                    Url = request.RequestedUrl,
                     RawResponse = await ReadStreamAndConvert(response),
-                    Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
                     Message = JsonConvert.SerializeObject(request),
                     Timestamp = DateTimeOffset.UtcNow,
                     PartitionKey = Guid.NewGuid().ToString(),
-                    RowKey = Guid.NewGuid().ToString()
+                    RowKey = Guid.NewGuid().ToString(),
+                    Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
                 };
                 pacResponses.Add(pacResponse);
             }

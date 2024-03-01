@@ -10,14 +10,16 @@
           Here you will find the requests analyzed
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-          <ng-container matColumnDef="MessageId">
-            <th mat-header-cell *matHeaderCellDef> Message Id. </th>
-            <td mat-cell *matCellDef="let request"> {{request.MessageId}} </td>
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8 mat">
+          <ng-container matColumnDef="Url">
+            <th mat-header-cell *matHeaderCellDef> Url. </th>
+            <td mat-cell *matCellDef="let request"> {{request.Url}} </td>
           </ng-container>
           <ng-container matColumnDef="CroppedResponse">
             <th mat-header-cell *matHeaderCellDef> Cropped Data. </th>
-            <td mat-cell *matCellDef="let request"> {{request.CroppedResponse}} </td>
+            <td mat-cell *matCellDef="let request" class="mat-cell-right">
+               <button mat-button color="accent" type="button" (click)="openDialog(request)">See Details</button>
+            </td>
           </ng-container>
 
           <ng-container *ngIf="dataSource.data.length > 0">
