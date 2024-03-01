@@ -2,9 +2,6 @@
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models.Requests;
 using PingAndCrop.Objects.Models.Responses;
-using System.Xml.Serialization;
-using System.Xml;
-using Azure.Data.Tables;
 
 namespace PingAndCrop.Domain.Services
 {

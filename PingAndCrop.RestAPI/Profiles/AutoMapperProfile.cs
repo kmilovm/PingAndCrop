@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Storage.Queues.Models;
-using Newtonsoft.Json;
 using PingAndCrop.Objects.Models.Requests;
 using PingAndCrop.Objects.Models.Responses;
 using PingAndCrop.Objects.ViewModels;

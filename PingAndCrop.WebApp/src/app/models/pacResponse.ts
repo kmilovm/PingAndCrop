@@ -1,7 +1,6 @@
-import { PacRequest } from "./pacRequest";
-
 export interface PacResponse
 {
+    Id:string;
     Url?:string;
     Message?:string;
     CroppedResponse?: string;

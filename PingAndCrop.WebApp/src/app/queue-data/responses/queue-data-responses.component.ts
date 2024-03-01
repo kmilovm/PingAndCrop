@@ -19,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 export class QueueDataResponsesComponent implements OnInit {
   dataSource:MatTableDataSource<PacResponse> = new MatTableDataSource<PacResponse>([]);
-  displayedColumns: string[] = ['Url', 'CroppedResponse'];
+  displayedColumns: string[] = ['Id', 'Url', 'CroppedResponse'];
   panelOpenState = true;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -43,10 +43,8 @@ export class QueueDataResponsesComponent implements OnInit {
   }
 
   openDialog(request:any): void {
-    console.log(request);
-    const dialogRef = this.dialog.open(DetailsDialogComponent, {
-      width: '600px', // Set the desired width
-      // You can pass data to the dialog if needed:
+    this.dialog.open(DetailsDialogComponent, {
+      width: '600px',
       data: {
         url: request.Url,
         details: request.CroppedResponse
