@@ -2,6 +2,9 @@
 using PingAndCrop.Domain.Interfaces;
 using PingAndCrop.Objects.Models.Requests;
 using PingAndCrop.Objects.Models.Responses;
+using System.Xml.Serialization;
+using System.Xml;
+using Azure.Data.Tables;
 
 namespace PingAndCrop.Domain.Services
 {
@@ -30,7 +33,7 @@ namespace PingAndCrop.Domain.Services
                 response.EnsureSuccessStatusCode();
                 var pacResponse = new PacResponse()
                 {
-                    RawResponse = await response.Content.ReadAsStringAsync(),
+                    RawResponse = await ReadStreamAndConvert(response),
                     Error = !response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : string.Empty,
                     Message = JsonConvert.SerializeObject(request),
                     Timestamp = DateTimeOffset.UtcNow,
@@ -42,6 +45,15 @@ namespace PingAndCrop.Domain.Services
 
             await RemoveRequests(pacRequests);
             await StoreResponses(pacResponses);
+        }
+
+        private static async Task<string> ReadStreamAndConvert(HttpResponseMessage response)
+        {
+            var result = await response.Content.ReadAsStringAsync();
+            var doc = new HtmlAgilityPack.HtmlDocument();
+            doc.LoadHtml(result);
+            var headNode = doc.DocumentNode.SelectSingleNode("/html/head").InnerHtml;
+            return headNode;
         }
 
         private async Task StoreResponses(IEnumerable<PacResponse> responses)
