@@ -2,9 +2,9 @@ import { PacRequest } from "./pacRequest";
 
 export interface PacResponse
 {
-    Error?: string;
-    RawResponse?: string;
+    Url?:string;
+    Message?:string;
     CroppedResponse?: string;
-    MessageId?:string;
-    PacRequest: PacRequest;
+    RawResponse?: string;
+    Error?: string;
 }
