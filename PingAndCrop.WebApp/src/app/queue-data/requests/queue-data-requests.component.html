@@ -9,7 +9,7 @@
           Here you will find the pending requests to be analyzed
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <ng-container matColumnDef="Id">
           <th mat-header-cell *matHeaderCellDef> Id. </th>
           <td mat-cell *matCellDef="let request"> {{request.Id}} </td>
@@ -22,7 +22,12 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         </ng-container>
         <tr mat-row *matRowDef="let request; columns: displayedColumns"></tr>
-      </table>
+      </mat-table>
+      <mat-paginator #paginator
+                 [pageSize]="5"
+                 [pageSizeOptions]="[5, 10, 20]"
+                 [showFirstLastButtons]="true">
+      </mat-paginator>
     </mat-expansion-panel>
   </mat-accordion>
 </div>
