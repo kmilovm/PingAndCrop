@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, timer } from 'rxjs';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { PacResponse } from '../models/pacResponse';
 import { PacRequest } from '../models/pacRequest';
@@ -27,11 +27,10 @@ export class QueueDataService {
   }
 
   private fetchDataBase<T>(url: string): Observable<Array<T>> {
-
     return timer(0, this.intervalMinutes * 60 * 1000).pipe(
       switchMap(() => {
         const uniqueParam = new Date().getTime();
-        return this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`);
+        return this.http.get<Array<T>>(url+ `?cacheBuster=${uniqueParam}`)
       }),
       catchError((error) => {
         console.error('Error fetching data:', error);

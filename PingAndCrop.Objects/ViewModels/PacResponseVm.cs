@@ -1,5 +1,4 @@
 ﻿using PingAndCrop.Objects.Models;
-using PingAndCrop.Objects.Models.Requests;
 
 namespace PingAndCrop.Objects.ViewModels
 {
