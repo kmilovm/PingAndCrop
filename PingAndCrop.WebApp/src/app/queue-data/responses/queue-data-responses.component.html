@@ -36,11 +36,16 @@
               columns: displayedColumns;"
          [ngClass]="{gray: even}"></tr>
       </mat-table>
-      <mat-paginator #paginator
+      <div class="flexRow">
+        <div *ngIf="countdown$ | async as countdown">
+          {{ countdown }}
+        </div>
+        <mat-paginator #paginator
                  [pageSize]="5"
                  [pageSizeOptions]="[5, 10, 20]"
                  [showFirstLastButtons]="true">
-      </mat-paginator>
+        </mat-paginator>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

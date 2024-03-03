@@ -31,3 +31,16 @@ mat-row,
 mat-header-row {
   display: table-row;
 }
+
+
+.flexRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+.flexRow #div {
+  align-items: center;
+  text-align: center;
+}
