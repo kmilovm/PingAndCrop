@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QueueDataResponsesComponent } from './queue-data-requests.component';
+import { QueueDataRequestsComponent } from './queue-data-requests.component';
 
 describe('QueueDataRequestsComponent', () => {
-  let component: QueueDataResponsesComponent;
-  let fixture: ComponentFixture<QueueDataResponsesComponent>;
+  let component: QueueDataRequestsComponent;
+  let fixture: ComponentFixture<QueueDataRequestsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QueueDataResponsesComponent]
+      imports: [QueueDataRequestsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(QueueDataResponsesComponent);
+    fixture = TestBed.createComponent(QueueDataRequestsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
